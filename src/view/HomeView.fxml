@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="mainPane" prefHeight="660.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
+   <children>
+      <Line endX="-100.0" endY="-510.0" layoutX="500.0" layoutY="541.0" startX="-100.0" startY="50.0" stroke="#c3c2c2" AnchorPane.leftAnchor="399.5" />
+      <Label layoutX="26.0" layoutY="23.0" prefHeight="17.0" prefWidth="149.0" styleClass="item-title" text="Following" AnchorPane.leftAnchor="26.0" />
+      <Label layoutX="426.0" layoutY="23.0" prefHeight="17.0" prefWidth="149.0" styleClass="item-title" text="Followers" AnchorPane.leftAnchor="426.0" />
+      <VBox fx:id="followingBox" layoutX="26.0" layoutY="65.0" prefHeight="362.0" prefWidth="350.0" spacing="10.0" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="65.0" />
+      <VBox fx:id="followersBox" layoutX="426.0" layoutY="65.0" prefHeight="362.0" prefWidth="350.0" spacing="10.0" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="426.0" AnchorPane.topAnchor="65.0" />
+   </children>
+</AnchorPane>

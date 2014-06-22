@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.IndexController">
+   <children>
+      <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="backgroundApplication" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="topBar" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="1172.0" styleClass="topBar" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+               <children>
+                  <AnchorPane layoutX="1127.0" layoutY="9.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <Rectangle fx:id="maximize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="20.0" layoutX="7.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton" width="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Rectangle fx:id="innerMaximize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="10.0" layoutX="4.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="1057.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <Rectangle fx:id="minimize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="20.0" layoutX="8.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton" width="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Line endX="105.0" layoutX="-90.0" layoutY="10.0" startX="95.0" AnchorPane.bottomAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="1138.0" layoutY="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <Rectangle fx:id="quit" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="20.0" layoutX="-10.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="quitLabel" alignment="CENTER" focusTraversable="false" layoutX="-4.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" styleClass="topBarButton" text="X" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <Label fx:id="nameLabel" layoutX="146.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="204.0" styleClass="item-title" text="Label" AnchorPane.leftAnchor="146.0" />
+                  <ImageView fx:id="userImage" fitHeight="45.0" fitWidth="57.0" layoutX="78.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true" />
+                  <Polygon fx:id="backButton" fill="#a3a4a4" layoutX="15.0" layoutY="26.0" rotate="270.0" scaleX="0.2" scaleY="0.2" scaleZ="0.2" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton">
+                    <points>
+                      <Double fx:value="-50.0" />
+                      <Double fx:value="40.0" />
+                      <Double fx:value="50.0" />
+                      <Double fx:value="40.0" />
+                      <Double fx:value="0.0" />
+                      <Double fx:value="-60.0" />
+                    </points>
+                  </Polygon>
+                  <Polygon fx:id="nextButton" fill="#a3a4a4" layoutX="43.0" layoutY="26.0" rotate="90.0" scaleX="0.2" scaleY="0.2" scaleZ="0.2" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton">
+                     <points>
+                        <Double fx:value="-50.0" />
+                        <Double fx:value="40.0" />
+                        <Double fx:value="50.0" />
+                        <Double fx:value="40.0" />
+                        <Double fx:value="0.0" />
+                        <Double fx:value="-60.0" />
+                     </points>
+                  </Polygon>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="contentPane" layoutX="338.0" layoutY="91.0" prefHeight="660.0" prefWidth="800.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="358.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="98.0">
+               <children>
+                  <Accordion layoutX="76.0" layoutY="35.0" />
+               </children>
+            </AnchorPane>
+            <VBox fx:id="leftBox" layoutX="33.0" layoutY="77.0" prefHeight="471.0" prefWidth="270.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="80.0">
+               <children>
+                  <HBox prefHeight="41.0" prefWidth="160.0">
+                     <children>
+                        <TextField fx:id="otherRepositoryField" prefHeight="41.0" prefWidth="247.0" promptText="Other repository  &quot;owned/name&quot;" />
+                        <Button id="repositoryButton" fx:id="otherOkButton" mnemonicParsing="false" prefHeight="41.0" prefWidth="28.0" style="-fx-padding: 0 0 0 0;" text="Ok" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Line endX="-100.0" endY="650.0" layoutX="425.0" layoutY="81.0" startX="-100.0" stroke="#c3c1c1" />
+            <AnchorPane fx:id="notificationPane" layoutX="686.0" layoutY="701.0" prefHeight="162.0" prefWidth="350.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <TextArea fx:id="notificationLabel" editable="false" layoutX="21.0" layoutY="39.0" prefHeight="138.0" prefWidth="340.0" styleClass="notificationLabel" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <AnchorPane layoutX="326.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <Rectangle fx:id="quit1" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="20.0" layoutX="-10.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="quitNotification" alignment="CENTER" focusTraversable="false" layoutX="-4.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" text="X" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <Label fx:id="contentTitle" layoutX="359.0" layoutY="64.0" prefHeight="17.0" prefWidth="357.0" styleClass="item-title" text="Title" />
+            <ImageView fx:id="resizeImage" fitHeight="20.0" fitWidth="20.0" layoutX="1015.0" layoutY="695.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <cursor>
+                  <Cursor fx:constant="SE_RESIZE" />
+               </cursor>
+            </ImageView>
+         </children>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </AnchorPane>
+   </children>
+</AnchorPane>
