@@ -34,3 +34,12 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+bin/application/JMetroDarkTheme.css
+bin/application/JMetroLightTheme.css
+*.class
+bin/application/application.css
+bin/view/HomeView.fxml
+bin/view/IndexView.fxml
+bin/view/LoginView.fxml
+bin/view/RepositoryView.fxml

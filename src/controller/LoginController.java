@@ -60,7 +60,7 @@ public class LoginController {
 				}
 				
 			
-				LoginController.this.mainApp.getGitHubController().connect(username, password);
+				LoginController.this.mainApp.getGitHubModel().connect(username, password);
 				mainApp.writeNotification("Connection made.");
 				mainApp.loadHomeView();
 			}

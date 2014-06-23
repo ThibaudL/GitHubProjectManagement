@@ -2,20 +2,7 @@ package application;
 	
 import java.io.IOException;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import org.eclipse.egit.github.core.Repository;
 
 import model.GitHubModel;
 import controller.HomeController;
@@ -51,13 +38,13 @@ public class Main extends Application {
 			root = new BorderPane();
 			Scene scene = new Scene(root,1200,800);
 			scene.getStylesheets().add(getClass().getResource("JMetroDarkTheme.css").toExternalForm());
-			
+			primaryStage.setScene(scene);
+
 		
 			loadIndex();
             loadLogin();
 
 	        
-			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -115,7 +102,7 @@ public class Main extends Application {
 		this.gitHubModel = gitHubModel;
 	}
 	
-	public GitHubModel getGitHubController(){
+	public GitHubModel getGitHubModel(){
 		return this.gitHubModel;
 	}
 	
@@ -159,16 +146,23 @@ public class Main extends Application {
 		String nodeTitle = "Browser";
 		idxC.setContent(browser,nodeTitle);
         idxC.setContentTitle(nodeTitle);
+        
+		AnchorPane.setLeftAnchor(browser, new Double(0));
+		AnchorPane.setRightAnchor(browser, new Double(0));
+		AnchorPane.setTopAnchor(browser, new Double(0));
+		AnchorPane.setBottomAnchor(browser, new Double(0));
+
 
 	}
 	
-	public void loadRepoWiew(String repoName){
+	public void loadRepoWiew(String repoName,Repository repository){
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/RepositoryView.fxml"));
             AnchorPane repoView = (AnchorPane) loader.load();
             
             RepositoryController repoC = loader.getController();
             repoC.setMainApp(this);
+            repoC.setRepoId(repository);
 
             idxC.setContent(repoView,repoName);
             idxC.setContentTitle(repoName);

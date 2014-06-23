@@ -15,31 +15,41 @@ import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class IndexController {
 
+	protected static final double MIN_WIDTH = 1200;
+	protected static final double MIN_HEIGHT = 800;
+	
 	@FXML
 	private Pane topBar;
 	@FXML
@@ -78,6 +88,15 @@ public class IndexController {
 	private Button otherOkButton;
 	@FXML
 	private VBox leftBox;
+	@FXML
+	private HBox otherChoiceBox;
+	
+	
+	@FXML
+	private Line leftBar;
+	@FXML
+	private Line topBarLine;
+	
 
 	@FXML
 	private Label contentTitle;
@@ -203,35 +222,60 @@ public class IndexController {
                 double differenceY = draggedY - pressedY;
 
                 Stage primaryStage = mainApp.getPrimaryStage();
-				primaryStage.setX(primaryStage.getX() + differenceX);
-				primaryStage.setY(primaryStage.getY() + differenceY); 
+                if(primaryStage.getWidth() + differenceX>MIN_WIDTH)
+                	primaryStage.setWidth(primaryStage.getWidth() + differenceX);
+                if(primaryStage.getHeight() + differenceY>MIN_HEIGHT)
+                	primaryStage.setHeight(primaryStage.getHeight() + differenceY);
             }
         });
 		
 		otherOkButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Repository repo = mainApp.getGitHubController().loadRepository(otherRepositoryField.getText());
+				final Repository repo = mainApp.getGitHubModel().loadRepository(otherRepositoryField.getText());
 				if(repo != null){
+					final String repoName = repo.getName();
 					EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
-							// TODO Auto-generated method stub
-							
+							IndexController.this.mainApp.loadRepoWiew(repoName,repo);
 						}
 					};
-					addBoxButtonWithImage(repo.getName(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);
+					addBoxButtonWithImage(repo.getName(),repo.getId(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);
+				}
+			}
+		});
+		
+		otherRepositoryField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.ENTER)
+				{
+					final Repository repo = mainApp.getGitHubModel().loadRepository(otherRepositoryField.getText());
+					if(repo != null){
+						final String repoName = repo.getName();
+						EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								IndexController.this.mainApp.loadRepoWiew(repoName,repo);
+							}
+						};
+						
+						addBoxButtonWithImage(repo.getName(),repo.getId(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);
+					}
 				}
 			}
 		});
 		
 		notificationPane.setVisible(false);
 		leftBox.setVisible(false);
-
+		//resizeImage.setImage(new Image());
+		
 		nameLabel.setText("Welcome");
 		memory = new ArrayList<NamedNode>();
 
-
+		
 
 	}
 
@@ -262,6 +306,19 @@ public class IndexController {
 
 	public void setMainApp(Main mainApp) {
         this.mainApp = mainApp;
+        
+        Stage stage = mainApp.getPrimaryStage();
+		Scene scene = stage.getScene();
+		scene.widthProperty().addListener(new ChangeListener<Number>() {
+		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {		    	
+		    	topBarLine.setEndX(newSceneWidth.intValue()-520);
+		    }
+		});
+		scene.heightProperty().addListener(new ChangeListener<Number>() {
+		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+		    	leftBar.setEndY(newSceneHeight.doubleValue()-120);
+		    }
+		});
     }
     
     
@@ -322,9 +379,10 @@ public class IndexController {
 		list.add(content);
 		content.autosize();
 		
-		content.setStyle("-fx-min-width:"+contentPane.getWidth()+";" +
-							"-fx-min-height:"+contentPane.getHeight()+";" 
-				);
+		content.setStyle(
+				"-fx-min-width:"+contentPane.getWidth()+";" +
+				"-fx-min-height:"+contentPane.getHeight()+";" 
+						);
 
 	}
 
@@ -351,37 +409,41 @@ public class IndexController {
 	
 	
 	
-	private Button createLeftButton(String name,EventHandler<ActionEvent> event){
+	private Button createLeftButton(String name,long id, EventHandler<ActionEvent> event){
 		Button butt = new Button();
-		butt.setId("repositoryButton");
+		butt.setId(new Long(id).toString());
 		butt.setPrefWidth(270);
 		butt.setPrefHeight(50);
 		butt.setText(name);
+		butt.setStyle("    -fx-font-size: 12pt;"+
+					"-fx-text-alignment: left;"+
+					"-fx-padding: 10 10 10 10;");
 		
 		butt.setOnAction(event);
 
 		return butt;
 	}
 	
-	private void addBoxButtonWithImage(String name,Image img,VBox dest,EventHandler<ActionEvent> event){
+	private void addBoxButtonWithImage(String name,long id, Image img,VBox dest,EventHandler<ActionEvent> event){
 		HBox hb = new HBox();
 		dest.getChildren().add(hb);
 		hb.getChildren().add(new ImageView(img));
-		hb.getChildren().add(createLeftButton(name,event));
+		hb.getChildren().add(createLeftButton(name,id,event));
 	}
 
 	public void setLeftBar(){
 		leftBox.setVisible(true);
 		leftBox.getChildren().clear();
-		for (Repository repo : mainApp.getGitHubController().getRepositories()) {
+		leftBox.getChildren().add(otherChoiceBox);
+		for (final Repository repo : mainApp.getGitHubModel().getRepositories()) {
 			final String repoName = repo.getName();
 			EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					IndexController.this.mainApp.loadRepoWiew(repoName);
+					IndexController.this.mainApp.loadRepoWiew(repoName,repo);
 				}
 			};
-			addBoxButtonWithImage(repo.getName(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);
+			addBoxButtonWithImage(repo.getName(),repo.getId(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);
 		}
 	}
 

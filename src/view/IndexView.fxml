@@ -41,7 +41,11 @@
                      </children>
                   </AnchorPane>
                   <Label fx:id="nameLabel" layoutX="146.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="204.0" styleClass="item-title" text="Label" AnchorPane.leftAnchor="146.0" />
-                  <ImageView fx:id="userImage" fitHeight="45.0" fitWidth="57.0" layoutX="78.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="userImage" fitHeight="45.0" fitWidth="57.0" layoutX="78.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor>
+                  </ImageView>
                   <Polygon fx:id="backButton" fill="#a3a4a4" layoutX="15.0" layoutY="26.0" rotate="270.0" scaleX="0.2" scaleY="0.2" scaleZ="0.2" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton">
                     <points>
                       <Double fx:value="-50.0" />
@@ -71,7 +75,7 @@
             </AnchorPane>
             <VBox fx:id="leftBox" layoutX="33.0" layoutY="77.0" prefHeight="471.0" prefWidth="270.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="80.0">
                <children>
-                  <HBox prefHeight="41.0" prefWidth="160.0">
+                  <HBox fx:id="otherChoiceBox" prefHeight="41.0" prefWidth="160.0">
                      <children>
                         <TextField fx:id="otherRepositoryField" prefHeight="41.0" prefWidth="247.0" promptText="Other repository  &quot;owned/name&quot;" />
                         <Button id="repositoryButton" fx:id="otherOkButton" mnemonicParsing="false" prefHeight="41.0" prefWidth="28.0" style="-fx-padding: 0 0 0 0;" text="Ok" />
@@ -79,7 +83,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Line endX="-100.0" endY="650.0" layoutX="425.0" layoutY="81.0" startX="-100.0" stroke="#c3c1c1" />
+            <Line fx:id="leftBar" endX="-100.0" endY="680.0" layoutX="425.0" layoutY="81.0" startX="-100.0" stroke="#c3c1c1" />
             <AnchorPane fx:id="notificationPane" layoutX="686.0" layoutY="701.0" prefHeight="162.0" prefWidth="350.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <TextArea fx:id="notificationLabel" editable="false" layoutX="21.0" layoutY="39.0" prefHeight="138.0" prefWidth="340.0" styleClass="notificationLabel" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
@@ -95,12 +99,13 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <Label fx:id="contentTitle" layoutX="359.0" layoutY="64.0" prefHeight="17.0" prefWidth="357.0" styleClass="item-title" text="Title" />
+            <Label fx:id="contentTitle" layoutX="359.0" layoutY="57.0" prefHeight="17.0" prefWidth="357.0" styleClass="item-title" text="Title" />
             <ImageView fx:id="resizeImage" fitHeight="20.0" fitWidth="20.0" layoutX="1015.0" layoutY="695.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <cursor>
                   <Cursor fx:constant="SE_RESIZE" />
                </cursor>
             </ImageView>
+            <Line fx:id="topBarLine" endX="700.0" layoutX="460.0" layoutY="92.0" startX="-100.0" stroke="#aeaeae" />
          </children>
          <cursor>
             <Cursor fx:constant="DEFAULT" />

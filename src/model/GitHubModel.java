@@ -1,12 +1,16 @@
 package model;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.scene.image.Image;
 
+import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CommitService;
@@ -110,7 +114,34 @@ public class GitHubModel {
 		return null;
 	}
 	
-	public void commit(String repository){
-		
+	public List<RepositoryCommit> getCommit(Repository repository){
+		try{
+			return commitService.getCommits(repository);
+		} catch (IOException e) {
+			mainApp.writeNotification(e.getMessage());
+		}
+		return null;
+	}
+	
+	public List<Issue> getOpenIssues(Repository repository){
+		try {
+			Map<String,String> options = new HashMap<String, String>();
+			options.put(IssueService.FILTER_STATE,IssueService.STATE_OPEN);
+			return issueService.getIssues(repository,options);
+		} catch (IOException e) {
+			mainApp.writeNotification(e.getMessage());
+		}
+		return null;
+	}
+	
+	public List<Issue> getClosedIssues(Repository repository){
+		try {
+			Map<String,String> options = new HashMap<String, String>();
+			options.put(IssueService.FILTER_STATE,IssueService.STATE_CLOSED);
+			return issueService.getIssues(repository,options);
+		} catch (IOException e) {
+			mainApp.writeNotification(e.getMessage());
+		}
+		return null;
 	}
 }

@@ -40,12 +40,12 @@ public class HomeController {
 
 	public void setMainApp(Main mainApp) {
 		this.mainApp = mainApp;
-		this.mainApp.setName(mainApp.getGitHubController().getConnectedUserName());
-		this.mainApp.setUserImage(mainApp.getGitHubController().getConnectedUserImage());
+		this.mainApp.setName(mainApp.getGitHubModel().getConnectedUserName());
+		this.mainApp.setUserImage(mainApp.getGitHubModel().getConnectedUserImage());
 		
 		
 		
-		for (User usr : mainApp.getGitHubController().getFollowing()){
+		for (User usr : mainApp.getGitHubModel().getFollowing()){
 			final User userAction = usr;
 			EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
 				@Override
@@ -56,7 +56,7 @@ public class HomeController {
 			addBoxButtonWithImage(usr.getLogin(),new Image(usr.getAvatarUrl(),50,50,true,true),followingBox,clicEvent);
 		}
 		
-		for (User usr : mainApp.getGitHubController().getFollowers()){
+		for (User usr : mainApp.getGitHubModel().getFollowers()){
 			final User userAction = usr;
 			EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
 				@Override
