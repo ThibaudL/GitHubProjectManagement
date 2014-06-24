@@ -43,3 +43,5 @@ bin/view/HomeView.fxml
 bin/view/IndexView.fxml
 bin/view/LoginView.fxml
 bin/view/RepositoryView.fxml
+bin/view/IssueView.fxml
+bin/view/IssuesMenuView.fxml

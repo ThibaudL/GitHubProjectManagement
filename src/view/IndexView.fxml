@@ -20,13 +20,22 @@
                <children>
                   <AnchorPane layoutX="1127.0" layoutY="9.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="5.0">
                      <children>
-                        <Rectangle fx:id="maximize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="20.0" layoutX="7.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton" width="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Rectangle fx:id="innerMaximize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="10.0" layoutX="4.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                        <Rectangle fx:id="maximize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="20.0" layoutX="7.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton" width="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor></Rectangle>
+                        <Rectangle fx:id="innerMaximize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="10.0" layoutX="4.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor></Rectangle>
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="1057.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="5.0">
                      <children>
-                        <Rectangle fx:id="minimize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="20.0" layoutX="8.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton" width="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Rectangle fx:id="minimize" arcHeight="5.0" arcWidth="5.0" fill="#a3a4a4" height="20.0" layoutX="8.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton" width="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor></Rectangle>
                         <Line endX="105.0" layoutX="-90.0" layoutY="10.0" startX="95.0" AnchorPane.bottomAnchor="5.0" />
                      </children>
                   </AnchorPane>
@@ -37,10 +46,13 @@
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
                         </Label>
                      </children>
                   </AnchorPane>
-                  <Label fx:id="nameLabel" layoutX="146.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="204.0" styleClass="item-title" text="Label" AnchorPane.leftAnchor="146.0" />
+                  <Label fx:id="nameLabel" graphicTextGap="0.0" layoutX="146.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="204.0" styleClass="item-title" text="Label" AnchorPane.leftAnchor="146.0" />
                   <ImageView fx:id="userImage" fitHeight="45.0" fitWidth="57.0" layoutX="78.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
@@ -55,6 +67,9 @@
                       <Double fx:value="0.0" />
                       <Double fx:value="-60.0" />
                     </points>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
                   </Polygon>
                   <Polygon fx:id="nextButton" fill="#a3a4a4" layoutX="43.0" layoutY="26.0" rotate="90.0" scaleX="0.2" scaleY="0.2" scaleZ="0.2" stroke="BLACK" strokeType="INSIDE" styleClass="topBarButton">
                      <points>
@@ -65,6 +80,9 @@
                         <Double fx:value="0.0" />
                         <Double fx:value="-60.0" />
                      </points>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
                   </Polygon>
                </children>
             </AnchorPane>
@@ -99,7 +117,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <Label fx:id="contentTitle" layoutX="359.0" layoutY="57.0" prefHeight="17.0" prefWidth="357.0" styleClass="item-title" text="Title" />
+            <Label fx:id="contentTitle" layoutX="359.0" layoutY="57.0" prefHeight="17.0" prefWidth="357.0" styleClass="item-title" text="Title" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="30.0" />
             <ImageView fx:id="resizeImage" fitHeight="20.0" fitWidth="20.0" layoutX="1015.0" layoutY="695.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <cursor>
                   <Cursor fx:constant="SE_RESIZE" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.shape.*?>
 <?import java.lang.*?>
@@ -9,9 +10,10 @@
 <AnchorPane fx:id="mainPane" prefHeight="581.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RepositoryController">
    <children>
       <Label fx:id="openIssuesLabel" layoutX="698.0" layoutY="41.0" prefHeight="17.0" prefWidth="20.0" text="0" textFill="#bcbcbc" AnchorPane.rightAnchor="80.0" />
-      <ProgressBar fx:id="issuesAdvancement" layoutX="12.0" layoutY="23.0" prefHeight="18.0" prefWidth="775.0" progress="0.0" style="-fx-text-box-border: forestgreen; -fx-control-inner-background: palegreen; -fx-progress-color: red;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <ProgressBar fx:id="issuesAdvancement" layoutX="12.0" layoutY="23.0" prefHeight="18.0" prefWidth="775.0" progress="0.0" style="-fx-accent: palegreen;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
       <Label layoutX="719.0" layoutY="41.0" prefHeight="17.0" prefWidth="71.0" text="active issues" textFill="#bcbcbc" AnchorPane.rightAnchor="10.0" />
       <Label layoutX="31.0" layoutY="41.0" prefHeight="17.0" prefWidth="71.0" text="closed issues" textFill="#bcbcbc" />
       <Label fx:id="closedIssuesLabel" layoutX="10.0" layoutY="41.0" prefHeight="17.0" prefWidth="20.0" text="0" textFill="#bcbcbc" />
+      <Button fx:id="issuesButton" layoutX="10.0" layoutY="73.0" mnemonicParsing="false" text="Issues" />
    </children>
 </AnchorPane>

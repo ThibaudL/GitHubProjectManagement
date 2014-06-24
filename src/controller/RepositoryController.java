@@ -5,12 +5,24 @@ import java.util.List;
 import model.GitHubModel;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableColumn.CellDataFeatures;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import application.Main;
 
 public class RepositoryController {
@@ -20,6 +32,8 @@ public class RepositoryController {
 	
 	private List<Issue> openIssues;
 	private List<Issue> closedIssues;
+	private List<Milestone> milestones;
+
 	
 	@FXML
 	private Label openIssuesLabel;
@@ -29,6 +43,8 @@ public class RepositoryController {
 	private ProgressBar issuesAdvancement;
 	@FXML
 	private AnchorPane mainPane;
+	@FXML
+	private Button issuesButton;
 
 	public RepositoryController() {
 	}
@@ -39,6 +55,15 @@ public class RepositoryController {
 		AnchorPane.setRightAnchor(mainPane, new Double(0));
 		AnchorPane.setTopAnchor(mainPane, new Double(0));
 		AnchorPane.setBottomAnchor(mainPane, new Double(0));
+		
+		issuesButton.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				mainApp.loadIssuesMenu(repository);
+			}
+		});
+	
 	}
 
 	public void setMainApp(Main mainApp) {
@@ -47,12 +72,13 @@ public class RepositoryController {
 
 	}
 
-	public void setRepoId(Repository repository) {
+	public void setRepo(Repository repository) {
 		this.repository = repository;
 		initData();
 	}
 	
 	private void initData(){
+		//Open issues
 		openIssues = githubModel.getOpenIssues(repository);
 		int openSize = 0;
 		if(openIssues != null){
@@ -60,6 +86,7 @@ public class RepositoryController {
 			if(openSize>0)
 				openIssuesLabel.setText(new Integer(openSize).toString());
 		}
+		//Closed issues
 		closedIssues = githubModel.getClosedIssues(repository);
 		int closedSize = 0;
 		if(closedIssues != null){
@@ -67,9 +94,8 @@ public class RepositoryController {
 			if(closedSize>0)
 				closedIssuesLabel.setText(new Integer(closedSize).toString());
 		}
-		
+		//Progress bar
 		float progressValue = (float)(closedSize)/((float)closedSize+(float)openSize);
-		
 		issuesAdvancement.setProgress(progressValue);
 
 	}

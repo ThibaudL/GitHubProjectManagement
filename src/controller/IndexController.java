@@ -238,7 +238,7 @@ public class IndexController {
 					EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
-							IndexController.this.mainApp.loadRepoWiew(repoName,repo);
+							IndexController.this.mainApp.loadRepoWiew(repo);
 						}
 					};
 					addBoxButtonWithImage(repo.getName(),repo.getId(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);
@@ -258,7 +258,7 @@ public class IndexController {
 						EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
-								IndexController.this.mainApp.loadRepoWiew(repoName,repo);
+								IndexController.this.mainApp.loadRepoWiew(repo);
 							}
 						};
 						
@@ -440,7 +440,7 @@ public class IndexController {
 			EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					IndexController.this.mainApp.loadRepoWiew(repoName,repo);
+					IndexController.this.mainApp.loadRepoWiew(repo);
 				}
 			};
 			addBoxButtonWithImage(repo.getName(),repo.getId(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);

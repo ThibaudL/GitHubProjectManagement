@@ -2,11 +2,14 @@ package application;
 	
 import java.io.IOException;
 
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 
 import model.GitHubModel;
 import controller.HomeController;
 import controller.IndexController;
+import controller.IssueController;
+import controller.IssueMenuController;
 import controller.LoginController;
 import controller.RepositoryController;
 import javafx.application.Application;
@@ -155,18 +158,56 @@ public class Main extends Application {
 
 	}
 	
-	public void loadRepoWiew(String repoName,Repository repository){
+	public void loadRepoWiew(Repository repository){
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/RepositoryView.fxml"));
             AnchorPane repoView = (AnchorPane) loader.load();
             
             RepositoryController repoC = loader.getController();
             repoC.setMainApp(this);
-            repoC.setRepoId(repository);
+            repoC.setRepo(repository);
 
-            idxC.setContent(repoView,repoName);
-            idxC.setContentTitle(repoName);
+            idxC.setContent(repoView,repository.getName());
+            idxC.setContentTitle(repository.getName());
 
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	 
+	public void loadIssuesMenu(Repository repository){
+		try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/IssuesMenuView.fxml"));
+            AnchorPane issueMenuView = (AnchorPane) loader.load();
+            
+            IssueMenuController issueMenuC = loader.getController();
+            issueMenuC.setMainApp(this);
+            issueMenuC.setRepo(repository);
+
+            String nodeTitle = repository.getName()+" | Issues";
+			idxC.setContent(issueMenuView,nodeTitle);
+            idxC.setContentTitle(nodeTitle);
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public void loadIssue(Repository repository, Issue issue){
+		try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/IssueView.fxml"));
+            AnchorPane issueView = (AnchorPane) loader.load();
+            
+            IssueController issueC = loader.getController();
+            issueC.setMainApp(this);
+            issueC.setIssue(issue);
+
+            String nodeTitle = repository.getName() +" | " + issue.getTitle();
+			idxC.setContent(issueView,nodeTitle);
+            idxC.setContentTitle(nodeTitle);
+            
 
         } catch (IOException e) {
             e.printStackTrace();

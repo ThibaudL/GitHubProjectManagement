@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.User;
@@ -46,7 +47,6 @@ public class GitHubModel {
 	public void connect(String username, String password){
 		client = new GitHubClient();
 		client.setCredentials(username, password);
-		
 		
 		repoService = new RepositoryService(client);
 		userService = new UserService(client);
@@ -139,6 +139,15 @@ public class GitHubModel {
 			Map<String,String> options = new HashMap<String, String>();
 			options.put(IssueService.FILTER_STATE,IssueService.STATE_CLOSED);
 			return issueService.getIssues(repository,options);
+		} catch (IOException e) {
+			mainApp.writeNotification(e.getMessage());
+		}
+		return null;
+	}
+	
+	public List<Milestone> getMilestones(Repository repository){
+		try {
+			return milestoneService.getMilestones(repository, "open");
 		} catch (IOException e) {
 			mainApp.writeNotification(e.getMessage());
 		}
