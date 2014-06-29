@@ -202,8 +202,7 @@ public class Main extends Application {
             
             IssueController issueC = loader.getController();
             issueC.setMainApp(this);
-            issueC.setIssue(issue);
-
+            issueC.setIssueAndRepository(repository, issue);
             String nodeTitle = repository.getName() +" | " + issue.getTitle();
 			idxC.setContent(issueView,nodeTitle);
             idxC.setContentTitle(nodeTitle);

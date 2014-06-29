@@ -42,7 +42,7 @@ public class IssueMenuController {
 	@FXML
 	public void initialize(){
 		openButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
+			 
 			public void handle(ActionEvent event) {
 				loadIssues(issuesOpen);
 				openButton.setDefaultButton(true);
@@ -51,7 +51,7 @@ public class IssueMenuController {
 		});
 		
 		closedButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
+			 
 			public void handle(ActionEvent event) {
 				loadIssues(issuesClosed);
 				openButton.setDefaultButton(false);
@@ -77,23 +77,26 @@ public class IssueMenuController {
 	private void loadIssues(List<Issue> issues){
 		issuesList.getChildren().clear();
 		for (Issue issue : issues) {
+			final Issue finalIssue = issue;
 			HBox hbox= new HBox();
 
 			Button issueButton = new Button();
 			issueButton.prefWidthProperty().bind(issuesList.widthProperty());
 			hbox.prefWidthProperty().bind(issueButton.widthProperty().add(-27));
+			
 			Pane contentPane = new Pane();
+			contentPane.setMinHeight(30);
 			Label issueLabel = new Label("#"+issue.getNumber()+"  "+issue.getTitle());
 			SimpleDateFormat format = new SimpleDateFormat("MMMMM dd");
 			Label dateLabel = new Label("Opened on "+format.format(issue.getCreatedAt()));
-			dateLabel.setStyle(" -fx-font-size: 8pt;"+
-							   "-fx-text-fill: #bcbcbc;"+	
+			dateLabel.setStyle(" -fx-font-size: 10pt;"+
+							   "-fx-text-fill: #e4e4e4;"+	
 							   "-fx-padding: 20 30 0 15;"
 					);
 		    Region spacer = new Region();
 		    HBox.setHgrow(spacer, Priority.ALWAYS);
 			hbox.setSpacing(5);
-			issueLabel.setStyle("-fx-text-fill: #bcbcbc;");
+			issueLabel.setStyle("-fx-text-fill: #e4e4e4;");
 			hbox.getChildren().add(issueLabel);
 			hbox.getChildren().add(spacer);
 			contentPane.getChildren().add(hbox);
@@ -120,9 +123,9 @@ public class IssueMenuController {
 			issuesList.getChildren().add(issueButton);
 			
 			issueButton.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
+				 
 				public void handle(ActionEvent event) {
-					mainApp.loadIssue(repository, issue);
+					mainApp.loadIssue(repository, finalIssue);
 				}
 			});
 		}

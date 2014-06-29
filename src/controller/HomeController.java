@@ -48,7 +48,6 @@ public class HomeController {
 		for (User usr : mainApp.getGitHubModel().getFollowing()){
 			final User userAction = usr;
 			EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
-				@Override
 				public void handle(ActionEvent event) {
 					HomeController.this.mainApp.loadWebPage(userAction.getHtmlUrl());
 				}
@@ -59,7 +58,6 @@ public class HomeController {
 		for (User usr : mainApp.getGitHubModel().getFollowers()){
 			final User userAction = usr;
 			EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
-				@Override
 				public void handle(ActionEvent event) {
 					HomeController.this.mainApp.loadWebPage(userAction.getHtmlUrl());
 				}

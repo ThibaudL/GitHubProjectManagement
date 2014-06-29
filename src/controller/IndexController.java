@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -80,6 +81,8 @@ public class IndexController {
 	private Polygon nextButton;
 	@FXML
 	private ImageView resizeImage;
+	@FXML
+	private ScrollPane scroll;
 	
 	//LEFT BAR
 	@FXML
@@ -126,7 +129,7 @@ public class IndexController {
     private void initialize() {
 		quitLabel.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
-            @Override
+             
             public void handle(MouseEvent t) {
                 Platform.exit();
             }
@@ -134,7 +137,7 @@ public class IndexController {
 		
 		userImage.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
-            @Override
+             
             public void handle(MouseEvent t) {
                 IndexController.this.mainApp.loadHomeView();
             }
@@ -142,21 +145,21 @@ public class IndexController {
 		
 		quitNotification.setOnMouseClicked(new EventHandler<MouseEvent>()
 	    {
-	        @Override
+	         
 	        public void handle(MouseEvent t) {
 	            notificationPane.setVisible(false);
 	        }
 	    });
 		
 		topBar.setOnMousePressed(new EventHandler<MouseEvent>() {
-		  @Override public void handle(MouseEvent mouseEvent) {
+		    public void handle(MouseEvent mouseEvent) {
 		    Stage stage = mainApp.getPrimaryStage();
 		    dragDeltaX = stage.getX() - mouseEvent.getScreenX();
 		    dragDeltaY = stage.getY() - mouseEvent.getScreenY();
 		  }
 		});
 		topBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
-		  @Override public void handle(MouseEvent mouseEvent) {
+		    public void handle(MouseEvent mouseEvent) {
 		    Stage stage = mainApp.getPrimaryStage();
 		    stage.setX(mouseEvent.getScreenX() + dragDeltaX);
 		    stage.setY(mouseEvent.getScreenY() + dragDeltaY);
@@ -166,7 +169,7 @@ public class IndexController {
 		
 		maximize.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
-            @Override
+             
             public void handle(MouseEvent t) {
                 maximizeAction();
             }
@@ -174,7 +177,7 @@ public class IndexController {
 		
 		innerMaximize.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
-            @Override
+             
             public void handle(MouseEvent t) {
                 maximizeAction();
             }
@@ -182,7 +185,7 @@ public class IndexController {
 		
 		minimize.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
-            @Override
+             
             public void handle(MouseEvent t) {
             	minimizeAction();
             }
@@ -190,7 +193,7 @@ public class IndexController {
 		
 		backButton.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
-            @Override
+             
             public void handle(MouseEvent t) {
             	previousPane();
             }
@@ -198,14 +201,14 @@ public class IndexController {
 		
 		nextButton.setOnMouseClicked(new EventHandler<MouseEvent>()
 	    {
-	        @Override
+	         
 	        public void handle(MouseEvent t) {
 	        	nextPane();
 	        }
 	    });
 		
 		resizeImage.setOnMousePressed(new EventHandler<MouseEvent>(){
-            @Override
+             
             public void handle(MouseEvent e) {
                 pressedX = e.getX();
                 pressedY = e.getY();
@@ -213,7 +216,7 @@ public class IndexController {
         });
 		
 		resizeImage.setOnMouseDragged(new EventHandler<MouseEvent>(){
-            @Override
+             
             public void handle(MouseEvent e) {
                 draggedX = e.getX();
                 draggedY = e.getY();
@@ -230,13 +233,13 @@ public class IndexController {
         });
 		
 		otherOkButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
+			 
 			public void handle(ActionEvent event) {
 				final Repository repo = mainApp.getGitHubModel().loadRepository(otherRepositoryField.getText());
 				if(repo != null){
 					final String repoName = repo.getName();
 					EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
-						@Override
+						 
 						public void handle(ActionEvent event) {
 							IndexController.this.mainApp.loadRepoWiew(repo);
 						}
@@ -248,7 +251,6 @@ public class IndexController {
 		
 		otherRepositoryField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
-			@Override
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.ENTER)
 				{
@@ -256,7 +258,6 @@ public class IndexController {
 					if(repo != null){
 						final String repoName = repo.getName();
 						EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
-							@Override
 							public void handle(ActionEvent event) {
 								IndexController.this.mainApp.loadRepoWiew(repo);
 							}
@@ -270,12 +271,17 @@ public class IndexController {
 		
 		notificationPane.setVisible(false);
 		leftBox.setVisible(false);
-		//resizeImage.setImage(new Image());
 		
 		nameLabel.setText("Welcome");
 		memory = new ArrayList<NamedNode>();
+		
+		contentPane.prefWidthProperty().bind(scroll.widthProperty().add(-2));
+		contentPane.prefHeightProperty().bind(scroll.heightProperty().add(-2));
+
+		scroll.setStyle("-fx-background-color:transparent;");
 
 		
+	
 
 	}
 
@@ -310,12 +316,12 @@ public class IndexController {
         Stage stage = mainApp.getPrimaryStage();
 		Scene scene = stage.getScene();
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {		    	
+		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {		    	
 		    	topBarLine.setEndX(newSceneWidth.intValue()-520);
 		    }
 		});
 		scene.heightProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
 		    	leftBar.setEndY(newSceneHeight.doubleValue()-120);
 		    }
 		});
@@ -351,7 +357,7 @@ public class IndexController {
         if (!Platform.isFxApplicationThread()) // Ensure on correct thread else hangs X under Unbuntu
         {
             Platform.runLater(new Runnable() {
-                @Override
+                 
                 public void run() {
                     _minimize();
                 }
@@ -383,6 +389,14 @@ public class IndexController {
 				"-fx-min-width:"+contentPane.getWidth()+";" +
 				"-fx-min-height:"+contentPane.getHeight()+";" 
 						);
+		
+		if(content instanceof AnchorPane){
+			((AnchorPane) content).prefWidthProperty().bind(contentPane.widthProperty());
+			((AnchorPane) content).prefHeightProperty().bind(contentPane.heightProperty());
+
+		}
+		
+		
 
 	}
 
@@ -438,7 +452,7 @@ public class IndexController {
 		for (final Repository repo : mainApp.getGitHubModel().getRepositories()) {
 			final String repoName = repo.getName();
 			EventHandler<ActionEvent> clicEvent = new EventHandler<ActionEvent>() {
-				@Override
+				 
 				public void handle(ActionEvent event) {
 					IndexController.this.mainApp.loadRepoWiew(repo);
 				}

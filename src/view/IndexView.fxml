@@ -86,11 +86,11 @@
                   </Polygon>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="contentPane" layoutX="338.0" layoutY="91.0" prefHeight="660.0" prefWidth="800.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="358.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="98.0">
-               <children>
-                  <Accordion layoutX="76.0" layoutY="35.0" />
-               </children>
-            </AnchorPane>
+            <ScrollPane fx:id="scroll" layoutX="359.0" layoutY="99.0" prefViewportHeight="660.0" prefViewportWidth="800.0" styleClass="background" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="358.0" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="99.0">
+               <content>
+                  <AnchorPane fx:id="contentPane" layoutX="338.0" layoutY="91.0" prefHeight="660.0" prefWidth="800.0" styleClass="background" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="358.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="98.0" />
+               </content>
+            </ScrollPane>
             <VBox fx:id="leftBox" layoutX="33.0" layoutY="77.0" prefHeight="471.0" prefWidth="270.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="80.0">
                <children>
                   <HBox fx:id="otherChoiceBox" prefHeight="41.0" prefWidth="160.0">

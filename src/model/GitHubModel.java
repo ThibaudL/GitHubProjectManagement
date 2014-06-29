@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javafx.scene.image.Image;
 
+import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Milestone;
@@ -17,6 +18,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
+import org.eclipse.egit.github.core.service.MarkdownService;
 import org.eclipse.egit.github.core.service.MilestoneService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.UserService;
@@ -32,6 +34,8 @@ public class GitHubModel {
 	private MilestoneService milestoneService;
 	private LabelService labelService;
 	private CommitService commitService;
+	private MarkdownService markdownService;
+	
 	
 	private List<Repository> repositories;
 	private List<Issue> issues;
@@ -39,12 +43,14 @@ public class GitHubModel {
 	private User user;
 	
 	private Main mainApp;
+	private String username;
 	
 	public GitHubModel(Main mainApp) {
 		this.mainApp = mainApp;
 	}
 	
 	public void connect(String username, String password){
+		this.username=username;
 		client = new GitHubClient();
 		client.setCredentials(username, password);
 		
@@ -54,6 +60,7 @@ public class GitHubModel {
 		milestoneService = new MilestoneService(client);
 		labelService = new LabelService(client);
 		commitService = new CommitService(client);
+		markdownService = new MarkdownService(client);
 		
 		try {
 			loadInformations();
@@ -152,5 +159,43 @@ public class GitHubModel {
 			mainApp.writeNotification(e.getMessage());
 		}
 		return null;
+	}
+	
+	public String markdownToHtml(String text){
+		try {
+			return markdownService.getHtml(text, "markdown");
+		} catch (IOException e) {
+			mainApp.writeNotification(e.getMessage());
+		}
+		return null;
+	}
+	
+	public List<Comment> getComments(Repository repository, long issueId){
+		try {
+			return issueService.getComments(repository, new Long(issueId).toString());
+		} catch (IOException e) {
+			mainApp.writeNotification("Error Get comments: "+e.getMessage());
+		}
+		return null;
+	}
+
+	public String connectedUser() {
+		return username;
+	}
+	
+	public void saveIssue(Repository repository, Issue issue){
+		try {
+			issueService.editIssue(repository, issue);
+		} catch (IOException e) {
+			mainApp.writeNotification("Error Save: "+e.getMessage());
+		}
+	}
+	
+	public void saveComment(Repository repository, Comment comment){
+		try {
+			issueService.editComment(repository, comment);
+		} catch (IOException e) {
+			mainApp.writeNotification("Error Save: "+e.getMessage());
+		}
 	}
 }

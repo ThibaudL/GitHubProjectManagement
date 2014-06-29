@@ -50,7 +50,6 @@ public class LoginController {
 		
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
 			
-			@Override
 			public void handle(ActionEvent event) {				
 				String username = usernameField.getText();
 				String password = passwordField.getText();

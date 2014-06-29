@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="581.0" prefWidth="800.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.IssueController">
-	<!-- TODO Add Nodes -->
+<AnchorPane prefHeight="581.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.IssueController">
+   <children>
+      <Label fx:id="titleLabel" layoutX="72.0" layoutY="42.0" styleClass="item-title" text="Label" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+      <VBox fx:id="commentBox" layoutX="30.0" layoutY="110.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="110.0">
+         <children>
+            <AnchorPane fx:id="contentPane" layoutX="30.0" layoutY="109.0" prefHeight="200.0" prefWidth="740.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="110.0" />
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>

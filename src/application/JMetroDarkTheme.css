@@ -44,6 +44,21 @@
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: white;
     -fx-opacity: 0.6;
+}   
+
+.item-h2{
+    -fx-font-size: 14pt;
+    -fx-text-fill: white;
+    -fx-opacity: 0.8;
+    -fx-padding: 2 2 2 2;   
+    -fx-font-weight:bold;
+} 
+
+.item-h4{
+    -fx-font-size: 10pt;
+    -fx-text-fill: white;
+    -fx-padding: 20 0 0 0;   
+    
 }     
 
 #repositoryButton{
