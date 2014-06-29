@@ -279,6 +279,8 @@ public class IndexController {
 		contentPane.prefHeightProperty().bind(scroll.heightProperty().add(-2));
 
 		scroll.setStyle("-fx-background-color:transparent;");
+		
+		resizeImage.setImage(new Image("/Images/resize.png"));
 
 		
 	

@@ -11,6 +11,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -34,6 +35,7 @@ public class EditableMardownViewer extends AnchorPane{
 	private Label dateLabel;
 	private Button editButton;
 	private Button removeButton;
+	private Button cancelButton;
 	private ImageView userImage;
 	private HBox hbox;
 	private TextArea editArea;
@@ -54,6 +56,7 @@ public class EditableMardownViewer extends AnchorPane{
 		dateLabel = new Label();
 		editButton = new Button("Edit");
 		removeButton = new Button("Remove");
+		cancelButton = new Button("Cancel");
 		hbox = new HBox();
 		scroll = new ScrollPane();
 		userImage = new ImageView();
@@ -89,13 +92,18 @@ public class EditableMardownViewer extends AnchorPane{
 		this.setStyle("-fx-border-color:#c3c1c1;-fx-border-radius:5;-fx-padding: 5 5 5 5;");
 		editButton.setStyle("-fx-border-color:white;-fx-border-radius:5;-fx-background-radius:5;");
 		removeButton.setStyle("-fx-border-color:white;-fx-border-radius:5;-fx-background-radius:5;");
+		cancelButton.setStyle("-fx-border-color:white;-fx-border-radius:5;-fx-background-radius:5;");
 	
 		editButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				if(editButton.getText().compareTo("Edit") == 0){
 					scroll.setContent(editArea);
 					editButton.setText("Save");
+					hbox.getChildren().add(cancelButton );
 				}else{
+					
+					hbox.getChildren().remove(cancelButton );
+
 					scroll.setContent(webView);
 					editButton.setText("Edit");
 				
@@ -112,6 +120,16 @@ public class EditableMardownViewer extends AnchorPane{
 				}
 			}
 		});
+		
+		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				hbox.getChildren().remove(cancelButton );
+				scroll.setContent(webView);
+				editButton.setText("Edit");
+				editArea.setText(issue.getBody());
+			}
+		});
+		
 		
 		scroll.heightProperty().addListener(new ChangeListener<Number>() {
 		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
@@ -177,7 +195,9 @@ public class EditableMardownViewer extends AnchorPane{
 
 	public void setComment(Comment com) {
 		this.comment = com;
-		setContentMarkdown(com.getBody());
+		String body = com.getBody();
+		if(body != null)
+			setContentMarkdown(body);
 
 		setAuthor(com.getUser().getLogin());
 		setAuhtorImage(com.getUser().getAvatarUrl());
@@ -189,4 +209,11 @@ public class EditableMardownViewer extends AnchorPane{
 		this.repository = repository;
 		
 	}
+	
+	public void setOnRemoveAction(EventHandler<ActionEvent> eventH){
+		removeButton.setOnAction(eventH);
+		
+	}
+	
+	
 }

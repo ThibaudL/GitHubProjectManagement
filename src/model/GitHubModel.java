@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
@@ -187,7 +188,7 @@ public class GitHubModel {
 		try {
 			issueService.editIssue(repository, issue);
 		} catch (IOException e) {
-			mainApp.writeNotification("Error Save: "+e.getMessage());
+			mainApp.writeNotification("Failed saving issue.");
 		}
 	}
 	
@@ -195,7 +196,51 @@ public class GitHubModel {
 		try {
 			issueService.editComment(repository, comment);
 		} catch (IOException e) {
-			mainApp.writeNotification("Error Save: "+e.getMessage());
+			mainApp.writeNotification("Failed saving comment.");
 		}
+	}
+	
+	public void removeComment(Repository repository, long commentId){
+		try {
+			issueService.deleteComment(repository, commentId);
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed deleting comment.");
+		}
+	}
+	
+	public List<Label> getRepositoryLabels(Repository repository){
+		try {
+			return labelService.getLabels(repository);
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed getting repositories labels.");
+		}
+		return null;
+	}
+	
+	public Comment newComment(IRepositoryIdProvider repository, int issueNumber){
+		try {
+			return issueService.createComment(repository, issueNumber, "TO DO : fill comment");
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed to create a new comment.");
+		}
+		return null;
+	}
+	
+	public List<Milestone> getOpenMilestones(IRepositoryIdProvider repository){
+		try {
+			return milestoneService.getMilestones(repository, "open");
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed getting milestones.");
+		}
+		return null;
+	}
+	
+	public List<Milestone> getClosedMilestones(IRepositoryIdProvider repository){
+		try {
+			return milestoneService.getMilestones(repository, "close");
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed getting milestones.");
+		}
+		return null;
 	}
 }
