@@ -14,9 +14,12 @@ import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
+import org.eclipse.egit.github.core.RepositoryContents;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.CommitService;
+import org.eclipse.egit.github.core.service.ContentsService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MarkdownService;
@@ -36,6 +39,8 @@ public class GitHubModel {
 	private LabelService labelService;
 	private CommitService commitService;
 	private MarkdownService markdownService;
+	private CollaboratorService colaboratorService;
+	private ContentsService contentsService;
 	
 	
 	private List<Repository> repositories;
@@ -50,7 +55,8 @@ public class GitHubModel {
 		this.mainApp = mainApp;
 	}
 	
-	public void connect(String username, String password){
+	public boolean connect(String username, String password){
+
 		this.username=username;
 		client = new GitHubClient();
 		client.setCredentials(username, password);
@@ -62,11 +68,14 @@ public class GitHubModel {
 		labelService = new LabelService(client);
 		commitService = new CommitService(client);
 		markdownService = new MarkdownService(client);
-		
+		colaboratorService = new CollaboratorService(client);
+		contentsService = new ContentsService(client);
 		try {
 			loadInformations();
+			return true;
 		} catch (IOException e) {
 			mainApp.writeNotification(e.getMessage());
+			return false;
 		}
 	}
 
@@ -162,9 +171,9 @@ public class GitHubModel {
 		return null;
 	}
 	
-	public String markdownToHtml(String text){
+	public String markdownToHtml(String text, Repository repository){
 		try {
-			return markdownService.getHtml(text, "markdown");
+			return markdownService.getRepositoryHtml(repository,text);
 		} catch (IOException e) {
 			mainApp.writeNotification(e.getMessage());
 		}
@@ -200,6 +209,33 @@ public class GitHubModel {
 		}
 	}
 	
+	public Label saveLabel(Repository repository, Label label){
+		try {
+			System.out.println(label.getName());
+			return labelService.editLabel(repository, label);
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed saving label."+e.getMessage());
+			return null;
+		}
+	}
+	
+	public Label createLabel(Repository repository, Label label){
+		try {
+			return labelService.createLabel(repository, label);
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed creating label."+e.getMessage());
+		}
+		return null;
+	}
+	
+	public void removeLabel(Repository repository, Label label){
+		try {
+			labelService.deleteLabel(repository, label.getName());
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed removing label."+e.getMessage());
+		}
+	}
+	
 	public void removeComment(Repository repository, long commentId){
 		try {
 			issueService.deleteComment(repository, commentId);
@@ -216,12 +252,21 @@ public class GitHubModel {
 		}
 		return null;
 	}
-	
-	public Comment newComment(IRepositoryIdProvider repository, int issueNumber){
+
+	public Comment createNewComment(IRepositoryIdProvider repository, int issueNumber){
 		try {
 			return issueService.createComment(repository, issueNumber, "TO DO : fill comment");
 		} catch (IOException e) {
 			mainApp.writeNotification("Failed to create a new comment.");
+		}
+		return null;
+	}
+	
+	public Issue createNewIssue(IRepositoryIdProvider repository,Issue issue){
+		try {
+			return issueService.createIssue(repository, issue);
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed to create a new Issue.");
 		}
 		return null;
 	}
@@ -240,6 +285,42 @@ public class GitHubModel {
 			return milestoneService.getMilestones(repository, "close");
 		} catch (IOException e) {
 			mainApp.writeNotification("Failed getting milestones.");
+		}
+		return null;
+	}
+	
+	public void cloneRepository(Repository repository){
+		//?? JGIT ?
+	}
+	
+	public List<User> getCollaborators(Repository repository){
+		try {
+			return colaboratorService.getCollaborators(repository);
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed getting the collaborators.");
+		}
+		return null;
+	}
+	
+	public List<Issue> getIssuesByMilestone(Repository repository, Milestone milestone){		
+		try {
+			Map<String, String> filterData = new HashMap<String, String>();
+			filterData.put(IssueService.FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
+			List<Issue> issues = issueService.getIssues(repository, filterData);
+			filterData.put(IssueService.FILTER_STATE, "close");
+			issues.addAll(issueService.getIssues(repository, filterData));
+			return issues;
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed getting the issues.");
+		}
+		return null;
+	}
+	
+	public List<RepositoryContents> getContents(Repository repository){
+		try {
+			return contentsService.getContents(repository);
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed getting contents.");
 		}
 		return null;
 	}

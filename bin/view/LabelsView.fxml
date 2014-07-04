@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="581.0" prefWidth="800.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.LabelsController">
+   <children>
+      <ScrollPane fx:id="labelScroll" layoutX="40.0" layoutY="40.0" prefViewportHeight="501.0" prefViewportWidth="203.0" styleClass="background" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
+         <content>
+            <VBox fx:id="labelsBox" layoutX="34.0" layoutY="36.0" prefHeight="501.0" prefWidth="203.0" styleClass="background" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" />
+         </content>
+      </ScrollPane>
+      <AnchorPane fx:id="labelManagementPane" layoutX="264.0" layoutY="40.0" prefHeight="168.0" prefWidth="230.0" style="-fx-border-radius: 5; -fx-border-color: white;" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <ColorPicker fx:id="labelColorPicker" layoutX="14.0" layoutY="57.0" prefHeight="40.0" prefWidth="200.0" />
+            <TextField fx:id="labelNameField" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="200.0" />
+            <Button fx:id="labelSaveButton" layoutX="14.0" layoutY="111.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="92.0" text="Save" />
+            <Button fx:id="deleteButton" layoutX="108.0" layoutY="111.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="104.0" text="Delete" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

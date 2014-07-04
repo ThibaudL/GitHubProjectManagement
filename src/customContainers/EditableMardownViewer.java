@@ -1,6 +1,7 @@
 package customContainers;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
@@ -107,7 +108,7 @@ public class EditableMardownViewer extends AnchorPane{
 					scroll.setContent(webView);
 					editButton.setText("Edit");
 				
-					setContentHTML(EditableMardownViewer.this.GHModel.markdownToHtml(editArea.getText()));
+					setContentHTML(EditableMardownViewer.this.GHModel.markdownToHtml(editArea.getText(),repository));
 					
 					if(issue != null && repository != null){
 						issue.setBody(editArea.getText());
@@ -148,7 +149,7 @@ public class EditableMardownViewer extends AnchorPane{
 	private void setContentHTML(String htmlContent){
 		String html = 
 				"<link href=\"https://assets-cdn.github.com/assets/github-c13b2c9e805745ba25729ccbf701703a88a37633.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\" />"+
-				"<div class=\"comment-body markdown-body markdown-format js-comment-body\">";
+						"<div class=\"comment-body markdown-body markdown-format js-comment-body\">";
 			
 		html+=htmlContent;
         webEngine.loadContent(html);
@@ -156,7 +157,7 @@ public class EditableMardownViewer extends AnchorPane{
 	
 	public void setContentMarkdown(String content){
 		editArea.setText(content);
-		setContentHTML(GHModel.markdownToHtml(content));
+		setContentHTML(GHModel.markdownToHtml(content,repository));
 	}
 	
 	
@@ -190,7 +191,12 @@ public class EditableMardownViewer extends AnchorPane{
 		setAuthor(issue.getUser().getLogin());
 		setAuhtorImage(issue.getUser().getAvatarUrl());
 		SimpleDateFormat format = new SimpleDateFormat("MMMMM dd");
-		setDate("Opened on "+format.format(issue.getCreatedAt())+ " and Updated on "+format.format(issue.getUpdatedAt()) );
+		Date closedAt = issue.getClosedAt();
+		if(closedAt != null)
+			setDate("Opened on "+format.format(issue.getCreatedAt())+ ", Updated on "+format.format(issue.getUpdatedAt()) +" and Closed on "+ format.format(closedAt) );
+		else
+			setDate("Opened on "+format.format(issue.getCreatedAt())+ "and Updated on "+format.format(issue.getUpdatedAt()));
+
 	}
 
 	public void setComment(Comment com) {

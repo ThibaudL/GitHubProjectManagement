@@ -10,12 +10,14 @@ import controller.HomeController;
 import controller.IndexController;
 import controller.IssueController;
 import controller.IssueMenuController;
+import controller.LabelsController;
 import controller.LoginController;
 import controller.RepositoryController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -116,7 +118,8 @@ public class Main extends Application {
 
 
 	public void loadHomeView() {
-		
+		setBusyCursor();
+
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/HomeView.fxml"));
             AnchorPane homeView = (AnchorPane) loader.load();
@@ -131,7 +134,9 @@ public class Main extends Application {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }finally{
+			setDefaultCursor();
+		}
 	}
 
 	public void setName(String name) {
@@ -211,5 +216,33 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+	}
+	
+	public void loadLabelsView(Repository repository){
+		try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LabelsView.fxml"));
+            AnchorPane issueView = (AnchorPane) loader.load();
+            
+            LabelsController issueC = loader.getController();
+            issueC.setMainApp(this);
+            issueC.setRepository(repository);
+            String nodeTitle = repository.getName() +" | Labels management" ;
+			idxC.setContent(issueView,nodeTitle);
+            idxC.setContentTitle(nodeTitle);
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public void setBusyCursor(){
+		idxC.getContent().setCursor(Cursor.WAIT);
+
+	}
+	
+	public void setDefaultCursor(){
+		idxC.getContent().setCursor(Cursor.DEFAULT);
+
 	}
 }

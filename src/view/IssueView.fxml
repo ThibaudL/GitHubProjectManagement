@@ -8,13 +8,18 @@
 
 <AnchorPane prefHeight="581.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.IssueController">
    <children>
-      <Label fx:id="titleLabel" layoutX="72.0" layoutY="42.0" styleClass="item-title" text="Label" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-      <VBox fx:id="commentBox" layoutX="30.0" layoutY="110.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="170.0">
+      <HBox fx:id="titleBox" layoutX="30.0" layoutY="42.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <Label fx:id="titleLabel" layoutX="72.0" layoutY="42.0" styleClass="item-title" text="Label" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <VBox fx:id="commentBox" layoutX="30.0" layoutY="205.0" prefHeight="336.0" prefWidth="740.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="200.0">
          <children>
             <AnchorPane fx:id="contentPane" layoutX="30.0" layoutY="109.0" prefHeight="200.0" prefWidth="740.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="110.0" />
          </children>
       </VBox>
       <HBox fx:id="labelBox" layoutX="30.0" layoutY="80.0" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="740.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="80.0" />
-      <HBox fx:id="milestoneBox" layoutX="40.0" layoutY="90.0" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="740.0" AnchorPane.bottomAnchor="491.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0" />
+      <HBox fx:id="milestoneBox" layoutX="40.0" layoutY="90.0" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="740.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0" />
+      <HBox fx:id="assigneeBox" layoutX="50.0" layoutY="100.0" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="740.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="160.0" />
    </children>
 </AnchorPane>

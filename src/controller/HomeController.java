@@ -28,6 +28,8 @@ public class HomeController {
 	private VBox followingBox;
 	@FXML
 	private VBox followersBox;
+	
+
 
 	public HomeController() {
 	}

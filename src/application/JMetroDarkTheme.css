@@ -58,6 +58,8 @@
     -fx-font-size: 10pt;
     -fx-text-fill: white;
     -fx-padding: 20 0 0 0;   
+    -fx-font-weight:bold;
+    
     
 }     
 

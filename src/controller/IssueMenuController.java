@@ -17,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -30,6 +32,12 @@ public class IssueMenuController {
 	private Button openButton;
 	@FXML
 	private Button closedButton;
+	@FXML
+	private HBox boxCreate;
+	@FXML
+	private TextField titleField;
+	@FXML
+	private Button createButton;
 	
 	private Main mainApp;
 	private GitHubModel gitHubModel;
@@ -58,6 +66,23 @@ public class IssueMenuController {
 				closedButton.setDefaultButton(true);
 			}
 		});
+		
+		createButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				if(titleField.getText() != null && titleField.getText().compareTo("") !=0){
+					Issue newIssue = new Issue();
+					newIssue.setTitle(titleField.getText());
+					newIssue.setBody("TO DO: fill issues body.");
+					newIssue = gitHubModel.createNewIssue(repository,newIssue) ;
+					mainApp.loadIssue(repository, newIssue);
+				}else{
+					mainApp.writeNotification("You need to enter a title for the new Issue.");
+				}
+			}
+		});
+		
+		
+		
 	}
 	
 	public void setMainApp(Main mainApp){
@@ -76,6 +101,10 @@ public class IssueMenuController {
 	
 	private void loadIssues(List<Issue> issues){
 		issuesList.getChildren().clear();
+		
+		
+		issuesList.getChildren().add(boxCreate);
+		
 		for (Issue issue : issues) {
 			final Issue finalIssue = issue;
 			HBox hbox= new HBox();
@@ -89,12 +118,13 @@ public class IssueMenuController {
 			Label issueLabel = new Label("#"+issue.getNumber()+"  "+issue.getTitle());
 			SimpleDateFormat format = new SimpleDateFormat("MMMMM dd");
 			Label dateLabel = new Label("Opened on "+format.format(issue.getCreatedAt()));
-			dateLabel.setStyle(" -fx-font-size: 10pt;"+
+			HBox.setHgrow(issueLabel,Priority.ALWAYS);
+			dateLabel.setStyle("-fx-font-size: 10pt;"+
 							   "-fx-text-fill: #e4e4e4;"+	
 							   "-fx-padding: 20 30 0 15;"
 					);
 		    Region spacer = new Region();
-		    HBox.setHgrow(spacer, Priority.ALWAYS);
+		    HBox.setHgrow(spacer, Priority.SOMETIMES);
 			hbox.setSpacing(5);
 			issueLabel.setStyle("-fx-text-fill: #e4e4e4;");
 			hbox.getChildren().add(issueLabel);
@@ -115,8 +145,8 @@ public class IssueMenuController {
 			if(milestone != null)
 			{	
 				Label label = new Label(milestone.getTitle());
-				label.getStyleClass().add("item-title");
-				label.setStyle("-fx-border-color:white;");
+				//label.getStyleClass().add("item-title");
+				label.setStyle("-fx-text-fill:white;-fx-border-color:white;-fx-padding: 5 15 5 15;");
 				hbox.getChildren().add(label);
 			}
 			issueButton.setGraphic(contentPane);

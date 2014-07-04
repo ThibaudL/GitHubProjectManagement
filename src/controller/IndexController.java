@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryContents;
 
 import utils.NamedNode;
 import application.Main;
@@ -401,6 +402,10 @@ public class IndexController {
 		
 
 	}
+	
+	public AnchorPane getContent(){
+		return contentPane;
+	}
 
 	public void writeNotification(String message) {
 		notificationLabel.setText(message);
@@ -457,6 +462,12 @@ public class IndexController {
 				 
 				public void handle(ActionEvent event) {
 					IndexController.this.mainApp.loadRepoWiew(repo);
+					/*List<RepositoryContents> contents = IndexController.this.mainApp.getGitHubModel().getContents(repo);
+					if(contents != null){
+						for (RepositoryContents repositoryContents : contents) {
+							System.out.println(repositoryContents.getName() + " --- "+repositoryContents.getType());
+						}
+					}*/
 				}
 			};
 			addBoxButtonWithImage(repo.getName(),repo.getId(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);

@@ -15,5 +15,13 @@
       <Label layoutX="31.0" layoutY="41.0" prefHeight="17.0" prefWidth="71.0" text="closed issues" textFill="#bcbcbc" />
       <Label fx:id="closedIssuesLabel" layoutX="10.0" layoutY="41.0" prefHeight="17.0" prefWidth="20.0" text="0" textFill="#bcbcbc" />
       <Button fx:id="issuesButton" layoutX="10.0" layoutY="73.0" mnemonicParsing="false" text="Issues" />
+      <ScrollPane fx:id="milestoneScroll" layoutX="10.0" layoutY="120.0" prefViewportHeight="441.0" prefViewportWidth="780.0" styleClass="backgound" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="120.0">
+         <content>
+            <HBox fx:id="milestoneBox" layoutX="8.0" layoutY="120.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" styleClass="background" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="120.0" />
+         </content>
+      </ScrollPane>
+      <Button fx:id="labelsButton" layoutX="121.0" layoutY="73.0" mnemonicParsing="false" text="Labels" />
+      <Button fx:id="milestonesButton" layoutX="235.0" layoutY="73.0" mnemonicParsing="false" text="Milestones" />
+      <Button fx:id="filesButton" layoutX="384.0" layoutY="73.0" mnemonicParsing="false" text="Files" />
    </children>
 </AnchorPane>
