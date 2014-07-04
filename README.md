@@ -1,6 +1,7 @@
 ### GitHub Project Management
 
 -------------
+Management of issues and milestones just as trello in order to manage the whole project with gitHub
 ![my_image](Image/ghManager.png)
 
 -------------
