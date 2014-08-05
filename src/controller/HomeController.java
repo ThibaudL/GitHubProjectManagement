@@ -54,7 +54,7 @@ public class HomeController {
 					HomeController.this.mainApp.loadWebPage(userAction.getHtmlUrl());
 				}
 			};
-			addBoxButtonWithImage(usr.getLogin(),new Image(usr.getAvatarUrl(),50,50,true,true),followingBox,clicEvent);
+			addBoxButtonWithImage(usr.getLogin(),this.mainApp.getGitHubModel().getUserImage(usr),followingBox,clicEvent);
 		}
 		
 		for (User usr : mainApp.getGitHubModel().getFollowers()){
@@ -64,7 +64,7 @@ public class HomeController {
 					HomeController.this.mainApp.loadWebPage(userAction.getHtmlUrl());
 				}
 			};
-			addBoxButtonWithImage(usr.getLogin(),new Image(usr.getAvatarUrl(),50,50,true,true),followersBox,clicEvent);
+			addBoxButtonWithImage(usr.getLogin(),this.mainApp.getGitHubModel().getUserImage(usr),followersBox,clicEvent);
 		}
 		
 	}
@@ -84,7 +84,10 @@ public class HomeController {
 	private void addBoxButtonWithImage(String name,Image img,VBox dest,EventHandler<ActionEvent> event){
 		HBox hb = new HBox();
 		dest.getChildren().add(hb);
-		hb.getChildren().add(new ImageView(img));
+		ImageView imageView = new ImageView(img);
+		imageView.setFitHeight(50);
+		imageView.setFitWidth(50);
+		hb.getChildren().add(imageView);
 		hb.getChildren().add(createLeftButton(name,event));
 	}
 }

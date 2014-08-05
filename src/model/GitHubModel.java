@@ -1,6 +1,7 @@
 package model;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,14 +46,18 @@ public class GitHubModel {
 	
 	private List<Repository> repositories;
 	private List<Issue> issues;
+	
+	private HashMap<String, Image> images;
 
 	private User user;
 	
 	private Main mainApp;
 	private String username;
+	private long time;
 	
 	public GitHubModel(Main mainApp) {
 		this.mainApp = mainApp;
+		images = new HashMap<String, Image>();
 	}
 	
 	public boolean connect(String username, String password){
@@ -78,6 +83,17 @@ public class GitHubModel {
 			return false;
 		}
 	}
+	
+	public Image getUserImage(User user){
+		if(images.containsKey(user.getLogin())){
+			return images.get(user.getLogin());
+		}else{
+			
+			Image img = new Image(user.getAvatarUrl(),40,40,true,true);
+			images.put(user.getLogin(), img);
+			return img;
+		}
+	}
 
 	private void loadInformations() throws IOException {
 		repositories = repoService.getRepositories();
@@ -89,7 +105,8 @@ public class GitHubModel {
 	}
 	
 	public Image getConnectedUserImage(){
-		Image image = new Image(user.getAvatarUrl(), 40, 40, false,false);
+		Image image = new Image(user.getAvatarUrl(), 50, 50, false,false);
+		images.put(user.getLogin(), image);
 		return image;
 	}
 	
@@ -230,9 +247,11 @@ public class GitHubModel {
 	
 	public void removeLabel(Repository repository, Label label){
 		try {
-			labelService.deleteLabel(repository, label.getName());
+			//labelService.deleteLabel(repository, label.getName());
+			String string = "/repos/"+repository.getOwner().getLogin()+"/"+repository.getName()+"/labels/"+label.getName();
+			client.delete(string);
 		} catch (IOException e) {
-			mainApp.writeNotification("Failed removing label."+e.getMessage());
+			mainApp.writeNotification("Failed removing label: "+e.getMessage());
 		}
 	}
 	
@@ -282,7 +301,8 @@ public class GitHubModel {
 	
 	public List<Milestone> getClosedMilestones(IRepositoryIdProvider repository){
 		try {
-			return milestoneService.getMilestones(repository, "close");
+			List<Milestone> milestones = milestoneService.getMilestones(repository, "close");
+			return milestones;
 		} catch (IOException e) {
 			mainApp.writeNotification("Failed getting milestones.");
 		}
@@ -295,7 +315,8 @@ public class GitHubModel {
 	
 	public List<User> getCollaborators(Repository repository){
 		try {
-			return colaboratorService.getCollaborators(repository);
+			List<User> collaborators = colaboratorService.getCollaborators(repository);
+			return collaborators;
 		} catch (IOException e) {
 			mainApp.writeNotification("Failed getting the collaborators.");
 		}
@@ -324,4 +345,5 @@ public class GitHubModel {
 		}
 		return null;
 	}
+
 }

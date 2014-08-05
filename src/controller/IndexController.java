@@ -448,7 +448,10 @@ public class IndexController {
 	private void addBoxButtonWithImage(String name,long id, Image img,VBox dest,EventHandler<ActionEvent> event){
 		HBox hb = new HBox();
 		dest.getChildren().add(hb);
-		hb.getChildren().add(new ImageView(img));
+		ImageView imageView = new ImageView(img);
+		imageView.setFitHeight(50);
+		imageView.setFitWidth(50);
+		hb.getChildren().add(imageView);
 		hb.getChildren().add(createLeftButton(name,id,event));
 	}
 
@@ -470,7 +473,7 @@ public class IndexController {
 					}*/
 				}
 			};
-			addBoxButtonWithImage(repo.getName(),repo.getId(),new Image(repo.getOwner().getAvatarUrl(),50,50,true,true),leftBox,clicEvent);
+			addBoxButtonWithImage(repo.getName(),repo.getId(),mainApp.getGitHubModel().getUserImage(repo.getOwner()),leftBox,clicEvent);
 		}
 	}
 

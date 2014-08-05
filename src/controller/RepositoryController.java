@@ -205,14 +205,16 @@ public class RepositoryController {
 				ImageView userImage = new ImageView();
 				User assignee = issue.getAssignee();
 				if(assignee != null){
-					Image img = new Image(assignee.getAvatarUrl(),30,30,false,false);
+					Image img = githubModel.getUserImage(assignee);
+					userImage.setFitHeight(30);
+					userImage.setFitWidth(30);
 					userImage.setImage(img);
 				}
 				
 				VBox checkboxBox = new VBox();
 				checkboxBox.setSpacing(5);
 				String body = issue.getBody();
-				if(body.contains("- [ ]") || body.contains("- [x]")){
+				if(body!=null && (body.contains("- [ ]") || body.contains("- [x]"))){
 					String[] split = body.split("\n");
 					for (final String string : split) {
 						if(string.contains("- [ ]") || string.contains("- [x]")){

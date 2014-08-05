@@ -68,6 +68,7 @@ public class IssueController {
 
 	
 	private EditableMardownViewer contentMarkdown;
+	private long time;
 	
 	@FXML
 	public void initialize(){
@@ -325,7 +326,6 @@ public class IssueController {
 				}
 			});
 		}
-		
 		for (final User user : GHmodel.getCollaborators(repository)) {
 			final Label label = new Label(user.getLogin());
 
@@ -337,13 +337,16 @@ public class IssueController {
 				}
 			}
 			label.getStyleClass().add("item-title");
-			label.setMinWidth(30);
+			label.setMinWidth(50);
 			HBox hb = new HBox();
-			hb.setStyle("-fx-padding: 5 15 5 15;");
+			hb.setStyle("-fx-padding: 5 0 5 0;");
+			HBox.setHgrow(label,Priority.ALWAYS);
 
 			hb.getChildren().add(label);
 			ImageView iv = new ImageView();
-			iv.setImage(new Image(user.getAvatarUrl(),30,30,false,false));
+			iv.setFitHeight(30);
+			iv.setFitWidth(30);
+			iv.setImage(GHmodel.getUserImage(user));
 			hb.getChildren().add(iv);
 
 			assigneeBox.getChildren().add(hb);
@@ -382,6 +385,8 @@ public class IssueController {
 		
 	}
 	
+	
+
 	
 
 }
