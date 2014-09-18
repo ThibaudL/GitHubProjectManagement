@@ -1,12 +1,20 @@
 package model;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javafx.scene.image.Image;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_REPOS;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_USERS;
+
+import com.google.gson.reflect.TypeToken;
+
+
+
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
@@ -18,6 +26,10 @@ import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryContents;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.client.GitHubRequest;
+import org.eclipse.egit.github.core.client.GitHubResponse;
+import org.eclipse.egit.github.core.client.PageIterator;
+import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.ContentsService;
@@ -33,7 +45,7 @@ import application.Main;
 public class GitHubModel {
 
 	private GitHubClient client;
-	private RepositoryService repoService;
+	private MyRepositoriesService repoService;
 	private UserService userService;
 	private IssueService issueService;
 	private MilestoneService milestoneService;
@@ -66,7 +78,7 @@ public class GitHubModel {
 		client = new GitHubClient();
 		client.setCredentials(username, password);
 		
-		repoService = new RepositoryService(client);
+		repoService = new MyRepositoriesService(client);
 		userService = new UserService(client);
 		issueService = new IssueService(client);
 		milestoneService = new MilestoneService(client);
@@ -75,6 +87,9 @@ public class GitHubModel {
 		markdownService = new MarkdownService(client);
 		colaboratorService = new CollaboratorService(client);
 		contentsService = new ContentsService(client);
+		
+		
+		
 		try {
 			loadInformations();
 			return true;
@@ -98,6 +113,9 @@ public class GitHubModel {
 	private void loadInformations() throws IOException {
 		repositories = repoService.getRepositories();
 		user = userService.getUser();
+		
+		repositories.addAll(getStarredRepositories());
+		
 	}
 	
 	public String getConnectedUserName(){
@@ -201,7 +219,7 @@ public class GitHubModel {
 		try {
 			return issueService.getComments(repository, new Long(issueId).toString());
 		} catch (IOException e) {
-			mainApp.writeNotification("Error Get comments: "+e.getMessage());
+			mainApp.writeNotification("Error Get comments.\n"+e.getMessage());
 		}
 		return null;
 	}
@@ -229,9 +247,11 @@ public class GitHubModel {
 	public Label saveLabel(Repository repository, Label label){
 		try {
 			System.out.println(label.getName());
+			label.setName(label.getName().replace(" ", "%x62"));
+			System.out.println(label.getName());
 			return labelService.editLabel(repository, label);
 		} catch (IOException e) {
-			mainApp.writeNotification("Failed saving label."+e.getMessage());
+			mainApp.writeNotification("Failed saving label.\n"+e.getMessage());
 			return null;
 		}
 	}
@@ -240,7 +260,7 @@ public class GitHubModel {
 		try {
 			return labelService.createLabel(repository, label);
 		} catch (IOException e) {
-			mainApp.writeNotification("Failed creating label."+e.getMessage());
+			mainApp.writeNotification("Failed creating label.\n"+e.getMessage());
 		}
 		return null;
 	}
@@ -251,7 +271,7 @@ public class GitHubModel {
 			String string = "/repos/"+repository.getOwner().getLogin()+"/"+repository.getName()+"/labels/"+label.getName();
 			client.delete(string);
 		} catch (IOException e) {
-			mainApp.writeNotification("Failed removing label: "+e.getMessage());
+			mainApp.writeNotification("Failed removing label.\n"+e.getMessage());
 		}
 	}
 	
@@ -327,9 +347,13 @@ public class GitHubModel {
 		try {
 			Map<String, String> filterData = new HashMap<String, String>();
 			filterData.put(IssueService.FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
+			filterData.put(IssueService.FILTER_STATE, IssueService.STATE_CLOSED);
+			
+
 			List<Issue> issues = issueService.getIssues(repository, filterData);
-			filterData.put(IssueService.FILTER_STATE, "close");
+			filterData.put(IssueService.FILTER_STATE, IssueService.STATE_OPEN);
 			issues.addAll(issueService.getIssues(repository, filterData));
+			
 			return issues;
 		} catch (IOException e) {
 			mainApp.writeNotification("Failed getting the issues.");
@@ -342,6 +366,17 @@ public class GitHubModel {
 			return contentsService.getContents(repository);
 		} catch (IOException e) {
 			mainApp.writeNotification("Failed getting contents.");
+		}
+		return null;
+	}
+	
+	public List<Repository> getStarredRepositories(){
+		try {
+			List<Repository> repositories = repoService.getStarredRepositories(user);
+			return repositories;
+			
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed getting starred repositories.");
 		}
 		return null;
 	}

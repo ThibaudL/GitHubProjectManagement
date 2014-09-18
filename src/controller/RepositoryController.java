@@ -108,21 +108,23 @@ public class RepositoryController {
 	
 	private void initData(){
 		//Open issues
-		openIssues = githubModel.getOpenIssues(repository);
 		int openSize = 0;
+		/*openIssues = githubModel.getOpenIssues(repository);
 		if(openIssues != null){
 			openSize = openIssues.size();
 			if(openSize>0)
 				openIssuesLabel.setText(new Integer(openSize).toString());
-		}
+		}*/
+		
+		
 		//Closed issues
-		closedIssues = githubModel.getClosedIssues(repository);
 		int closedSize = 0;
+		/*closedIssues = githubModel.getClosedIssues(repository);
 		if(closedIssues != null){
 			closedSize = closedIssues.size();
 			if(closedSize>0)
 				closedIssuesLabel.setText(new Integer(closedSize).toString());
-		}
+		}*/
 		//Progress bar
 		float progressValue = (float)(closedSize)/((float)closedSize+(float)openSize);
 		issuesAdvancement.setProgress(progressValue);
@@ -174,7 +176,7 @@ public class RepositoryController {
 				labelBox.setSpacing(5);
 				labelBox.setMinHeight(10);
 				labelBox.setMaxHeight(10);
-				issueBox.setMinHeight(75);
+				issueBox.setMinHeight(85);
 				issueBox.setStyle("-fx-background-radius:5;-fx-background-color:#a4a4a4;-fx-padding:5 5 5 5;");
 				Label issueLabel = new Label(issue.getTitle());
 				issueLabel.getStyleClass().add("item-title");
@@ -274,7 +276,7 @@ public class RepositoryController {
 			labelBox.setSpacing(5);
 			labelBox.setMinHeight(10);
 			labelBox.setMaxHeight(10);
-			issueBox.setMinHeight(20);
+			issueBox.setMinHeight(60);
 			issueBox.setStyle("-fx-background-radius:5;-fx-background-color:#a4a4a4;-fx-padding:5 5 5 5;");
 			Label issueLabel = new Label("Add new card");
 			issueLabel.getStyleClass().add("item-title");

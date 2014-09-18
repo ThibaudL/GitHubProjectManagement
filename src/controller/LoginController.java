@@ -32,6 +32,7 @@ public class LoginController {
 
 	public LoginController() {
 		prefs = Preferences.userNodeForPackage(application.Main.class);
+		
 	}
 	
 	@FXML

@@ -2,6 +2,7 @@ package customContainers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
@@ -148,7 +149,7 @@ public class EditableMardownViewer extends AnchorPane{
 	
 	private void setContentHTML(String htmlContent){
 		String html = 
-				"<link href=\"https://assets-cdn.github.com/assets/github-c13b2c9e805745ba25729ccbf701703a88a37633.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\" />"+
+				"<link href=\"https://assets-cdn.github.com/assets/github-dffb79fb82f52982b30244965c2578205ec70b2f.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\" />"+
 						"<div class=\"comment-body markdown-body markdown-format js-comment-body\">";
 			
 		html+=htmlContent;
@@ -190,12 +191,12 @@ public class EditableMardownViewer extends AnchorPane{
 
 		setAuthor(issue.getUser().getLogin());
 		setAuhtorImage(issue.getUser().getAvatarUrl());
-		SimpleDateFormat format = new SimpleDateFormat("MMMMM dd");
+		SimpleDateFormat format = new SimpleDateFormat("MMMMM dd", new Locale("en_EN"));
 		Date closedAt = issue.getClosedAt();
 		if(closedAt != null)
 			setDate("Opened on "+format.format(issue.getCreatedAt())+ ", Updated on "+format.format(issue.getUpdatedAt()) +" and Closed on "+ format.format(closedAt) );
 		else
-			setDate("Opened on "+format.format(issue.getCreatedAt())+ "and Updated on "+format.format(issue.getUpdatedAt()));
+			setDate("Opened on "+format.format(issue.getCreatedAt())+ " and Updated on "+format.format(issue.getUpdatedAt()));
 
 	}
 
@@ -207,7 +208,7 @@ public class EditableMardownViewer extends AnchorPane{
 
 		setAuthor(com.getUser().getLogin());
 		setAuhtorImage(com.getUser().getAvatarUrl());
-		SimpleDateFormat format = new SimpleDateFormat("MMMMM dd");
+		SimpleDateFormat format = new SimpleDateFormat("MMMMM dd", new Locale("en_EN"));
 		setDate("Created on "+format.format(com.getCreatedAt()) + " and Updated on "+format.format(com.getUpdatedAt()) );
 	}
 	
