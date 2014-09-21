@@ -149,7 +149,7 @@ public class EditableMardownViewer extends AnchorPane{
 	
 	private void setContentHTML(String htmlContent){
 		String html = 
-				"<link href=\"https://assets-cdn.github.com/assets/github-dffb79fb82f52982b30244965c2578205ec70b2f.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\" />"+
+				"<link href='"+getClass().getResource("/application/githubcss.css")+"' media=\"all\" rel=\"stylesheet\" type=\"text/css\" />"+
 						"<div class=\"comment-body markdown-body markdown-format js-comment-body\">";
 			
 		html+=htmlContent;

@@ -2,8 +2,13 @@ package model;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.Blob;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +21,21 @@ import com.google.gson.reflect.TypeToken;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
@@ -33,6 +52,7 @@ import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.ContentsService;
+import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MarkdownService;
@@ -244,12 +264,17 @@ public class GitHubModel {
 		}
 	}
 	
-	public Label saveLabel(Repository repository, Label label){
+	public Label saveLabel(Repository repository, Label label,String oldLabelName){
 		try {
-			System.out.println(label.getName());
-			label.setName(label.getName().replace(" ", "%x62"));
-			System.out.println(label.getName());
-			return labelService.editLabel(repository, label);
+			//System.out.println(label.getName());
+			//label.setName(label.getName().replace(" ", "%x62"));
+			//System.out.println(label.getName());
+			if(oldLabelName.compareTo(label.getName()) == 0){
+				return labelService.editLabel(repository, label);
+			}else{
+				labelService.deleteLabel(repository, oldLabelName);
+				return labelService.createLabel(repository, label);
+			}
 		} catch (IOException e) {
 			mainApp.writeNotification("Failed saving label.\n"+e.getMessage());
 			return null;
@@ -343,14 +368,14 @@ public class GitHubModel {
 		return null;
 	}
 	
-	public List<Issue> getIssuesByMilestone(Repository repository, Milestone milestone){		
+	public ArrayList<Issue> getIssuesByMilestone(Repository repository, Milestone milestone){		
 		try {
 			Map<String, String> filterData = new HashMap<String, String>();
 			filterData.put(IssueService.FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
 			filterData.put(IssueService.FILTER_STATE, IssueService.STATE_CLOSED);
 			
 
-			List<Issue> issues = issueService.getIssues(repository, filterData);
+			ArrayList<Issue> issues = new ArrayList<Issue>(issueService.getIssues(repository, filterData));
 			filterData.put(IssueService.FILTER_STATE, IssueService.STATE_OPEN);
 			issues.addAll(issueService.getIssues(repository, filterData));
 			
@@ -379,6 +404,99 @@ public class GitHubModel {
 			mainApp.writeNotification("Failed getting starred repositories.");
 		}
 		return null;
+	}
+	
+	public void createP2PadresBook(Repository repository){
+		List<RepositoryContents> contents = getContents(repository);
+		
+		if(contents != null && !contents.contains("connectedUsers.txt")){
+		/*	try {
+				Gist gist = new Gist();
+				HashMap<String, GistFile> map = new HashMap<String, GistFile>();
+				GistFile file = new GistFile();
+				file.setContent("MY IP ADRESS xxx.xxx.xxx.xxx");
+				file.setFilename("connectedUsers.txt");
+				map.put("connectedUsers.txt", file);
+				gist.setFiles(map);
+				gistService.createGist(gist);
+				List<Gist> gists = gistService.getGists(user.getLogin());
+				for (Gist gist2 : gists) {
+					System.out.println(gist2.getHtmlUrl());
+				}
+			} catch (IOException e) {
+				mainApp.writeNotification("Failed creating the gist for the p2p board.");
+			}*/
+		}
+	}
+
+	public void createMilestone(Repository repository, Milestone newmilestone) {
+		try {
+			milestoneService.createMilestone(repository, newmilestone);
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed creating the milestone.");
+		}
+	}
+
+	public Milestone saveMilestone(Repository repository, Milestone milestone,
+			String oldmilestoneName) {
+		try {
+			System.out.println(oldmilestoneName);
+			System.out.println(milestone.getTitle());
+
+			if(oldmilestoneName.compareTo(milestone.getTitle()) == 0){
+				return milestoneService.editMilestone(repository, milestone);
+			}else{
+				labelService.deleteLabel(repository, oldmilestoneName);
+				return milestoneService.createMilestone(repository, milestone);
+			}
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed saving the milestone.\n"+e.getMessage());
+			return null;
+		}
+	}
+
+	public void removeMilestone(Repository repository, Milestone milestone) {
+		try {
+			milestoneService.deleteMilestone(repository, milestone.getTitle());
+		} catch (IOException e) {
+			mainApp.writeNotification("Failed deleting the milestone.");
+		}
+	}
+	
+	public Hashtable<Milestone,ArrayList<Issue>> getIssuesSortedByMilestone(final Repository repository, List<Milestone> milestones){
+		
+		final class TheThread extends Thread {
+			Hashtable<Milestone,ArrayList<Issue>> retour ;
+			Milestone milestone;
+			public TheThread(Hashtable<Milestone,ArrayList<Issue>> toBeReturned,Milestone milestoneToUse) {
+				this.retour = toBeReturned;
+				milestone = milestoneToUse;
+			}
+			public void run() {
+				retour.put(milestone,getIssuesByMilestone(repository, milestone));
+			}
+		}
+		
+		Hashtable<Milestone,ArrayList<Issue>> retour = new Hashtable<Milestone,ArrayList<Issue>>();
+		ArrayList<TheThread> threads = new ArrayList<TheThread>();
+		
+		if(milestones != null){
+			for (final Milestone milestone : milestones) {
+				TheThread th = new TheThread(retour,milestone);
+				threads.add(th);
+				th.start();
+			}
+		}
+		
+		for (TheThread theThread : threads) {
+			try {
+				theThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return retour;
 	}
 
 }

@@ -1,7 +1,9 @@
 package controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 import model.GitHubModel;
@@ -9,30 +11,23 @@ import model.GitHubModel;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.util.MilestoneComparator;
 
-import com.sun.javafx.scene.input.DragboardHelper;
-
+import utils.Utils;
+import customContainers.KanbanIssueBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import application.Main;
 
@@ -92,6 +87,15 @@ public class RepositoryController {
 
 			}
 		});
+		
+		milestonesButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			public void handle(ActionEvent event) {
+				mainApp.loadMilestonesView(repository);
+
+			}
+		});
+	
 	
 	}
 
@@ -107,6 +111,8 @@ public class RepositoryController {
 	}
 	
 	private void initData(){
+		githubModel.createP2PadresBook(repository);
+		
 		//Open issues
 		int openSize = 0;
 		/*openIssues = githubModel.getOpenIssues(repository);
@@ -132,9 +138,70 @@ public class RepositoryController {
 		milestoneBox.prefWidthProperty().bind(milestoneScroll.widthProperty().add(-2));
 		milestoneBox.prefHeightProperty().bind(milestoneScroll.heightProperty().add(-2));
 		List<Milestone> milestones = githubModel.getOpenMilestones(repository);
-		if(milestones != null)
-		for (final Milestone milestone : milestones) {
-			VBox  vbox = new VBox();
+		//if(milestones != null){
+			
+		Hashtable<Milestone,ArrayList<Issue>> issuesByMilestone = githubModel.getIssuesSortedByMilestone(repository, milestones);
+		for (final Milestone milestone : issuesByMilestone.keySet()) {
+			final VBox  vbox = new VBox();
+			
+			vbox.setOnDragOver(new EventHandler<DragEvent>() {
+			    public void handle(DragEvent event) {
+			        /* data is dragged over the target */
+			        /* accept it only if it is not dragged from the same node 
+			         * and if it has a string data */
+			        if (event.getGestureSource() != vbox &&
+			                event.getDragboard().hasContent(Utils.issueFormat)) {
+			            /* allow for both copying and moving, whatever user chooses */
+			            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+			        }
+			        
+			        event.consume();
+			    }
+			});
+			
+			vbox.setOnDragEntered(new EventHandler<DragEvent>() {
+			    public void handle(DragEvent event) {
+			    /* the drag-and-drop gesture entered the target */
+			    /* show to the user that it is an actual gesture target */
+			         if (event.getGestureSource() != vbox &&
+			                 event.getDragboard().hasContent(Utils.issueFormat)) {
+					    	vbox.setStyle("-fx-background-radius:5;-fx-background-color:green;-fx-padding:5 5 5 5;");
+			         }
+			                
+			         event.consume();
+			    }
+			});
+			
+			vbox.setOnDragExited(new EventHandler<DragEvent>() {
+			    public void handle(DragEvent event) {
+			        /* mouse moved away, remove the graphical cues */
+			    	vbox.setStyle("-fx-background-radius:5;-fx-background-color:#4a4a4a;-fx-padding:5 5 5 5;");
+
+			        event.consume();
+			    }
+			});
+			
+			vbox.setOnDragDropped(new EventHandler<DragEvent>() {
+			    public void handle(DragEvent event) {
+			        /* data dropped */
+			        /* if there is a string data on dragboard, read it and use it */
+			        Dragboard db = event.getDragboard();
+			        boolean success = false;
+			        if (db.hasContent(Utils.issueFormat)) {
+			        	Issue issue = (Issue)db.getContent(Utils.issueFormat);
+						vbox.getChildren().add(2,new KanbanIssueBox(issue, repository, mainApp, githubModel,vbox));
+			        	issue.setMilestone(milestone);
+						githubModel.saveIssue(repository, issue);
+			        	success = true;
+			        }
+			        /* let the source know whether the string was successfully 
+			         * transferred and used */
+			        event.setDropCompleted(success);
+			        
+			        event.consume();
+			     }
+			});
+			
 			vbox.setSpacing(10);
 			milestoneBox.getChildren().add(vbox);
 			
@@ -157,120 +224,17 @@ public class RepositoryController {
 			Date dueOn = milestone.getDueOn();
 			if(dueOn != null){
 				Label dateLabel = new Label("Due on "+format1.format(dueOn)+" at "+format2.format(dueOn));
-				dateLabel.getStyleClass().add("item-h4");
+				//dateLabel.getStyleClass().add("item-h4");
 				if(dueOn.compareTo(new Date(System.currentTimeMillis()))>0)
 				{
 					dateLabel.setStyle("-fx-padding: 2 5 5 0;-fx-text-fill:green;");
 				}else{
-					dateLabel.setStyle("-fx-padding: 2 5 5 0;-fx-text-fill:red;");
+					dateLabel.setStyle("-fx-padding: 2 5 5 0;-fx-text-fill:#A80000 ;");
 				}
 				title.getChildren().add(dateLabel);
 			}
 			vbox.getChildren().add(title);
 
-			
-			List<Issue> issues = githubModel.getIssuesByMilestone(repository, milestone);
-			for (final Issue issue : issues) {
-				final VBox issueBox = new VBox();
-				HBox labelBox = new HBox();
-				labelBox.setSpacing(5);
-				labelBox.setMinHeight(10);
-				labelBox.setMaxHeight(10);
-				issueBox.setMinHeight(85);
-				issueBox.setStyle("-fx-background-radius:5;-fx-background-color:#a4a4a4;-fx-padding:5 5 5 5;");
-				Label issueLabel = new Label(issue.getTitle());
-				issueLabel.getStyleClass().add("item-title");
-				if(issue.getState().compareTo("closed") == 0){
-					ImageView iv = new ImageView();
-					iv.setImage(new Image("/Images/validate.png",20,20,false,false));
-					issueLabel.setGraphic(iv);
-					issueLabel.setStyle("-fx-text-fill:red;-fx-opacity:1;");
-				}else{
-					issueLabel.setStyle("-fx-text-fill:green;-fx-opacity:1;");
-
-				}
-				
-				for (org.eclipse.egit.github.core.Label label : issue.getLabels()) {
-					Label labelLabel = new Label(" ");
-					labelLabel.setMinWidth(20);
-					labelLabel.setMaxWidth(20);
-					labelLabel.setMinHeight(10);
-					labelLabel.setMaxHeight(10);
-
-					labelLabel.setStyle("-fx-background-color:#"+label.getColor()+";"+
-									"-fx-background-radius:5;-fx-padding: 0 15 5 15;"
-							
-							);
-					labelBox.getChildren().add(labelLabel);
-				}
-				HBox imageBox = new HBox();
-				ImageView userImage = new ImageView();
-				User assignee = issue.getAssignee();
-				if(assignee != null){
-					Image img = githubModel.getUserImage(assignee);
-					userImage.setFitHeight(30);
-					userImage.setFitWidth(30);
-					userImage.setImage(img);
-				}
-				
-				VBox checkboxBox = new VBox();
-				checkboxBox.setSpacing(5);
-				String body = issue.getBody();
-				if(body!=null && (body.contains("- [ ]") || body.contains("- [x]"))){
-					String[] split = body.split("\n");
-					for (final String string : split) {
-						if(string.contains("- [ ]") || string.contains("- [x]")){
-							final CheckBox ch = new CheckBox(string.replace("- [ ]","").replace("- [x]",""));
-							if(string.contains("- [x]")){
-								ch.setSelected(true);
-								
-							}
-							ch.setOnAction(new EventHandler<ActionEvent>() {
-								public void handle(ActionEvent event) {
-									String unselected = "[ ]";
-									String selected = "[x]";
-									String before = selected;
-									String after = unselected;
-									if(ch.isSelected()){
-										before = unselected;
-										after = selected;
-									}
-									String body = issue.getBody();
-									body = body.replace(string.replaceAll("\\[(.+)\\]",before), string.replaceAll("\\[(.+)\\]",after));
-									issue.setBody(body);
-
-									githubModel.saveIssue(repository, issue);
-									
-								}
-							});
-							ch.setStyle("-fx-text-fill:#e4e4e4");
-
-							checkboxBox.getChildren().add(ch);
-						}
-					}
-				}
-
-				issueBox.getChildren().add(labelBox);
-				issueBox.getChildren().add(issueLabel);
-				issueBox.getChildren().add(checkboxBox);
-				issueBox.getChildren().add(imageBox);
-			    Region spacer = new Region();
-			    HBox.setHgrow(spacer, Priority.ALWAYS);
-				imageBox.getChildren().addAll(spacer,userImage);
-				
-
-				vbox.getChildren().add(issueBox);
-				
-				issueBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-					public void handle(MouseEvent event) {
-						mainApp.loadIssue(repository, issue);
-					}
-				});				
-
-			}
-			
-			
 			final VBox issueBox = new VBox();
 			HBox labelBox = new HBox();
 			labelBox.setSpacing(5);
@@ -298,7 +262,15 @@ public class RepositoryController {
 					newIssue = githubModel.createNewIssue(repository,newIssue) ;
 					mainApp.loadIssue(repository, newIssue);
 				}
-			});		
+			});	
+			
+			//List<Issue> issues = githubModel.getIssuesByMilestone(repository, milestone);
+			for (final Issue issue : issuesByMilestone.get(milestone)) {
+				vbox.getChildren().add(new KanbanIssueBox(issue, repository, mainApp, githubModel,vbox));
+			}
+			
+			
+				
 
 		}
 

@@ -117,6 +117,7 @@ public class LabelsController {
 				labelSaveButton.setOnAction(new EventHandler<ActionEvent>() {
 
 					public void handle(ActionEvent event) {
+						String oldLabelName = label.getName();
 						label.setName(labelNameField.getText());
 						String color = labelColorPicker.getValue().toString().replace("0x","");
 						char[] newColor = new char[6];
@@ -124,7 +125,7 @@ public class LabelsController {
 						String newColorS = new String(newColor);
 						label.setColor(newColorS);
 						labelManagementPane.setVisible(false);
-						ghModel.saveLabel(repository, label);
+						ghModel.saveLabel(repository, label,oldLabelName);
 						
 						labelsBox.getChildren().clear();
 						setRepository(repository);						

@@ -285,46 +285,48 @@ public class IssueController {
 
 		}
 		contentMarkdown.hideRemoveButton();
-		
-		for (final Milestone milestone : GHmodel.getOpenMilestones(repository)) {
-			
-			final Label label = new Label(milestone.getTitle());
-
-			if(issue.getMilestone() != null){
-				if(new MilestoneComparator().compare(issue.getMilestone(),milestone) == 0){
-					ImageView iv = new ImageView();
-					iv.setImage(new Image("/Images/validate.png",20,20,false,false));
-					label.setGraphic(iv);
-				}
-			}
-			label.getStyleClass().add("item-title");
-			label.setStyle("-fx-border-color:white;-fx-padding: 5 15 5 15;");
-			label.setMinWidth(30);
-			milestoneBox.getChildren().add(label);
-			
-			label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				public void handle(MouseEvent event) {
-					Milestone newMilestone = new Milestone();
-					Milestone milestone2 = IssueController.this.issue.getMilestone();
-					if(milestone2 != null && milestone2.getTitle() != null && milestone!=null && new MilestoneComparator().compare(milestone2,milestone) == 0){
-						label.setGraphic(null);
-					}else{
-						for (Object iterable_element : milestoneBox.getChildren().toArray()) {
-							Label lab = (Label)iterable_element;
-							lab.setGraphic(null);
-						}
-						newMilestone = milestone;
-
+		List<Milestone> milestones = GHmodel.getOpenMilestones(repository);
+		if(milestones != null){
+			for (final Milestone milestone : milestones) {
+				
+				final Label label = new Label(milestone.getTitle());
+	
+				if(issue.getMilestone() != null){
+					if(new MilestoneComparator().compare(issue.getMilestone(),milestone) == 0){
 						ImageView iv = new ImageView();
 						iv.setImage(new Image("/Images/validate.png",20,20,false,false));
 						label.setGraphic(iv);
 					}
-					
-					IssueController.this.issue.setMilestone(newMilestone);
-					
-					GHmodel.saveIssue(IssueController.this.repository, IssueController.this.issue);
 				}
-			});
+				label.getStyleClass().add("item-title");
+				label.setStyle("-fx-border-color:white;-fx-padding: 5 15 5 15;");
+				label.setMinWidth(30);
+				milestoneBox.getChildren().add(label);
+				
+				label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					public void handle(MouseEvent event) {
+						Milestone newMilestone = new Milestone();
+						Milestone milestone2 = IssueController.this.issue.getMilestone();
+						if(milestone2 != null && milestone2.getTitle() != null && milestone!=null && new MilestoneComparator().compare(milestone2,milestone) == 0){
+							label.setGraphic(null);
+						}else{
+							for (Object iterable_element : milestoneBox.getChildren().toArray()) {
+								Label lab = (Label)iterable_element;
+								lab.setGraphic(null);
+							}
+							newMilestone = milestone;
+	
+							ImageView iv = new ImageView();
+							iv.setImage(new Image("/Images/validate.png",20,20,false,false));
+							label.setGraphic(iv);
+						}
+						
+						IssueController.this.issue.setMilestone(newMilestone);
+						
+						GHmodel.saveIssue(IssueController.this.repository, IssueController.this.issue);
+					}
+				});
+			}
 		}
 		for (final User user : GHmodel.getCollaborators(repository)) {
 			final Label label = new Label(user.getLogin());

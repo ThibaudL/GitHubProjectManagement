@@ -12,6 +12,7 @@ import controller.IssueController;
 import controller.IssueMenuController;
 import controller.LabelsController;
 import controller.LoginController;
+import controller.MilestonesController;
 import controller.RepositoryController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -228,6 +229,24 @@ public class Main extends Application {
             issueC.setRepository(repository);
             String nodeTitle = repository.getName() +" | Labels management" ;
 			idxC.setContent(issueView,nodeTitle);
+            idxC.setContentTitle(nodeTitle);
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public void loadMilestonesView(Repository repository){
+		try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MilestonesView.fxml"));
+            AnchorPane view = (AnchorPane) loader.load();
+            
+            MilestonesController controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setRepository(repository);
+            String nodeTitle = repository.getName() +" | Milestones management" ;
+			idxC.setContent(view,nodeTitle);
             idxC.setContentTitle(nodeTitle);
             
 
