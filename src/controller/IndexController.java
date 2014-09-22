@@ -276,8 +276,8 @@ public class IndexController {
 		nameLabel.setText("Welcome");
 		memory = new ArrayList<NamedNode>();
 		
-		contentPane.prefWidthProperty().bind(scroll.widthProperty().add(-2));
-		contentPane.prefHeightProperty().bind(scroll.heightProperty().add(-2));
+		contentPane.prefWidthProperty().bind(scroll.widthProperty());
+		contentPane.prefHeightProperty().bind(scroll.heightProperty());
 
 		scroll.setStyle("-fx-background-color:transparent;");
 		

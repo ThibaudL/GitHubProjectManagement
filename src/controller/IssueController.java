@@ -7,9 +7,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -56,6 +59,11 @@ public class IssueController {
 	private HBox milestoneBox;
 	@FXML 
 	private HBox assigneeBox;
+	@FXML
+	private ScrollPane labelScrollPane;
+	@FXML
+	private ScrollPane milestoneScrollPane;
+	
 	
 	private Button commentButton;
 	private Button closeButton;
@@ -73,6 +81,8 @@ public class IssueController {
 	@FXML
 	public void initialize(){
 		labelBox.setSpacing(10);
+		labelScrollPane.prefWidthProperty().bind(labelBox.widthProperty());
+		milestoneScrollPane.prefWidthProperty().bind(milestoneBox.widthProperty());
 		milestoneBox.setSpacing(10);
 		
 	}
@@ -211,6 +221,8 @@ public class IssueController {
 			this.titleLabel.setStyle("-fx-text-fill: orangered ;");
 		}
 		
+
+		
 		selectedLabels = issue.getLabels();
 		
 			List<org.eclipse.egit.github.core.Label> repositoryLabels = GHmodel.getRepositoryLabels(repository);
@@ -298,8 +310,8 @@ public class IssueController {
 						label.setGraphic(iv);
 					}
 				}
-				label.getStyleClass().add("item-title");
-				label.setStyle("-fx-border-color:white;-fx-padding: 5 15 5 15;");
+				label.getStyleClass().add("item-h2");
+				label.setStyle("-fx-border-color:white;-fx-padding: 2 10 2 10;-fx-background-radius:5;");
 				label.setMinWidth(30);
 				milestoneBox.getChildren().add(label);
 				

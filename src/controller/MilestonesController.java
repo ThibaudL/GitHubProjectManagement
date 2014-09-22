@@ -51,8 +51,8 @@ public class MilestonesController {
 	@FXML
 	public void initialize(){
 		
-		milestonesBox.prefWidthProperty().bind(milestoneScroll.widthProperty().add(-2));
-		milestonesBox.prefHeightProperty().bind(milestoneScroll.heightProperty().add(-2));
+		milestonesBox.prefWidthProperty().bind(milestoneScroll.widthProperty());
+		milestonesBox.prefHeightProperty().bind(milestoneScroll.heightProperty());
 		milestonesBox.setSpacing(10);
 		
 		milestoneManagementPane.setVisible(false);

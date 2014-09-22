@@ -260,6 +260,10 @@ public class Main extends Application {
 
 	}
 	
+	public void setOpenHandCursor(){
+		idxC.getContent().setCursor(Cursor.OPEN_HAND);
+	}
+	
 	public void setDefaultCursor(){
 		idxC.getContent().setCursor(Cursor.DEFAULT);
 

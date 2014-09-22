@@ -135,8 +135,8 @@ public class RepositoryController {
 		float progressValue = (float)(closedSize)/((float)closedSize+(float)openSize);
 		issuesAdvancement.setProgress(progressValue);
 		//Milestone box
-		milestoneBox.prefWidthProperty().bind(milestoneScroll.widthProperty().add(-2));
-		milestoneBox.prefHeightProperty().bind(milestoneScroll.heightProperty().add(-2));
+		milestoneBox.prefWidthProperty().bind(milestoneScroll.widthProperty());
+		milestoneBox.prefHeightProperty().bind(milestoneScroll.heightProperty());
 		List<Milestone> milestones = githubModel.getOpenMilestones(repository);
 		//if(milestones != null){
 			

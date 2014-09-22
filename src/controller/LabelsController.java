@@ -51,8 +51,8 @@ public class LabelsController {
 	@FXML
 	public void initialize(){
 		
-		labelsBox.prefWidthProperty().bind(labelScroll.widthProperty().add(-2));
-		labelsBox.prefHeightProperty().bind(labelScroll.heightProperty().add(-2));
+		labelsBox.prefWidthProperty().bind(labelScroll.widthProperty());
+		labelsBox.prefHeightProperty().bind(labelScroll.heightProperty());
 		labelsBox.setSpacing(10);
 		
 		labelManagementPane.setVisible(false);

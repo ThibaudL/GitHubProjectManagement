@@ -6,9 +6,24 @@
         Dark Metro style sheet for use in JavaFX applications
 */
 
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane:focused {
+    -fx-background-insets: 0;
+}
+
+.scroll-pane .corner {
+    -fx-background-insets: 0;
+}
+
 .background{
     -fx-background-color: #1d1d1d;    
 }
+
+
 
 .backgroundApplication{
     -fx-background-color: #1d1d1d;

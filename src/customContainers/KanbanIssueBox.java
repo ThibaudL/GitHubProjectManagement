@@ -10,6 +10,7 @@ import utils.Utils;
 import application.Main;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -28,6 +29,7 @@ import javafx.scene.layout.VBox;
 public class KanbanIssueBox extends VBox {
 	
 	private VBox container;
+	private Label issueLabel;
 
 	public KanbanIssueBox(final Issue issue, final Repository repository, final Main mainApp,final GitHubModel githubModel,VBox theContainer) {
 	
@@ -38,7 +40,7 @@ public class KanbanIssueBox extends VBox {
 		labelBox.setMaxHeight(10);
 		this.setMinHeight(85);
 		this.setStyle("-fx-background-radius:5;-fx-background-color:#a4a4a4;-fx-padding:5 5 5 5;");
-		Label issueLabel = new Label(issue.getTitle());
+		issueLabel = new Label(issue.getTitle());
 		issueLabel.getStyleClass().add("item-title");
 		if(issue.getState().compareTo("closed") == 0){
 			ImageView iv = new ImageView();
@@ -120,8 +122,23 @@ public class KanbanIssueBox extends VBox {
 		imageBox.getChildren().addAll(spacer,userImage);
 		
 
+		issueLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+			public void handle(MouseEvent arg0) {
+				issueLabel.setStyle(issueLabel.getStyle()+"-fx-background-color:#D0D0D0;-fx-background-radius:5;");
+				mainApp.setOpenHandCursor();
+			}
+		});
 		
-		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		issueLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+			public void handle(MouseEvent arg0) {
+				issueLabel.setStyle(issueLabel.getStyle()+"-fx-background-color:#a4a4a4;-fx-background-radius:5;");
+				mainApp.setDefaultCursor();
+			}
+		});
+		
+		issueLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			public void handle(MouseEvent event) {
 				mainApp.loadIssue(repository, issue);
