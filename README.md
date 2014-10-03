@@ -6,5 +6,7 @@ Management of issues and milestones just as trello in order to manage the whole 
 
 -------------
 ##### To create runable jar : (Error : Not taking the required jar for the API GitHub)
-##### javafxpackager.exe -createjar -appclass application.Main -outfile C:\Users\Thibaud\Documents\test -v -nocss2bin -srcdir E:\workspace\GitHubProjectManagement\bin
+##### javafxpackager.exe -createjar -appclass application.Main -outfile OUTPUT_PATH -v -nocss2bin -srcdir INPUT_PATH\bin
 -------------
+
+### This is the Eclipse project you can import it directly (if you'r using e(fx)clipse because it's using javafx)
